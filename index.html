@@ -1,0 +1,1352 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4f46e5">
+<title>Учу английский</title>
+<style>
+:root{
+  --bg:#f5f6fb; --card:#ffffff; --text:#1d2033; --muted:#6b7088; --line:#e3e5ef;
+  --accent:#4f46e5; --accent-soft:#eceafe; --ok:#16a34a; --ok-soft:#dcfce7; --bad:#dc2626; --bad-soft:#fee2e2;
+  --warn:#b45309; --warn-soft:#fef3c7; --pr:#7c3aed;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#11131c; --card:#1b1e2b; --text:#eceef7; --muted:#9aa0b8; --line:#2c3043;
+    --accent:#8b85ff; --accent-soft:#272550; --ok:#4ade80; --ok-soft:#163322; --bad:#f87171; --bad-soft:#3a1a1a;
+    --warn:#fbbf24; --warn-soft:#3a2e10; --pr:#c4a7ff;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{padding-bottom:84px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+header h1{font-size:19px;margin:0;display:flex;align-items:center;gap:8px}
+header .back{border:0;background:var(--accent-soft);color:var(--accent);border-radius:10px;padding:6px 12px;font-size:15px;font-weight:600}
+main{max-width:720px;margin:0 auto;padding:16px}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:6;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs button{flex:1;border:0;background:none;color:var(--muted);padding:8px 2px 10px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.tabs button span{font-size:22px;line-height:1}
+nav.tabs button.on{color:var(--accent);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:0 0 12px}
+.item{display:flex;align-items:center;gap:12px;cursor:pointer}
+.item .ic{font-size:26px;width:40px;text-align:center}
+.item .t{font-weight:600}
+.item .s{color:var(--muted);font-size:14px}
+.item .grow{flex:1;min-width:0}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:6px}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:20px 4px 8px}
+.banner{background:var(--warn-soft);color:var(--warn);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:12px 16px;font-size:16px;font-weight:600;background:var(--accent);color:#fff;cursor:pointer}
+.btn.sec{background:var(--accent-soft);color:var(--accent)}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);color:#fff}
+.btn.small{padding:6px 10px;font-size:14px;border-radius:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row .btn{flex:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.en{font-size:18px;font-weight:600}
+.pr{color:var(--pr);font-style:italic}
+.ru{color:var(--muted)}
+.big{font-size:28px;font-weight:700;text-align:center;margin:8px 0}
+.center{text-align:center}
+.flash{min-height:220px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:8px}
+.say{border:0;background:var(--accent-soft);color:var(--accent);border-radius:999px;width:40px;height:40px;font-size:18px;flex:none;cursor:pointer}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:12px 14px;margin:0 0 8px;font-size:16px;cursor:pointer}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+input.inp{width:100%;font-size:18px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text)}
+.msg-ok{color:var(--ok);font-weight:700}
+.msg-bad{color:var(--bad);font-weight:700}
+.sent{padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:10px}
+.sent:last-child{border-bottom:0}
+.blank{background:var(--accent-soft);color:transparent;border-radius:6px;cursor:pointer;user-select:none}
+.blank.show{color:var(--accent)}
+.hid{background:var(--line);color:transparent;border-radius:6px;cursor:pointer}
+.lesson h3{margin:18px 0 6px;font-size:17px}
+.lesson table{width:100%;border-collapse:collapse;font-size:15px;margin:6px 0 10px}
+.lesson td,.lesson th{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
+.lesson th{color:var(--muted);font-weight:600}
+.lesson .tip{background:var(--accent-soft);border-radius:12px;padding:10px 12px;margin:10px 0}
+.lesson b.e{color:var(--accent)}
+.wl{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.wl:last-child{border-bottom:0}
+.wl .k{width:10px;height:10px;border-radius:50%;background:var(--line);flex:none}
+.wl .k.y{background:var(--ok)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.w{cursor:pointer;border-bottom:1px dotted var(--muted)}
+.w.sel{background:var(--accent-soft);border-radius:4px}
+.pop{position:fixed;left:12px;right:12px;bottom:78px;z-index:9;background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:12px 14px;box-shadow:0 8px 30px rgba(0,0,0,.25);max-width:696px;margin:0 auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chips .chip{font-size:16px;padding:8px 12px}
+.chip.err{background:var(--bad-soft);border-color:var(--bad)}
+.built{min-height:56px;font-size:18px;font-weight:600;padding:10px;border:2px dashed var(--line);border-radius:12px}
+</style>
+</head>
+<body>
+<header><h1 id="hdr">Учу английский</h1></header>
+<main id="app"></main>
+<nav class="tabs" id="tabs"></nav>
+<div id="pop" class="pop" hidden></div>
+
+<script>
+/* ===================== ДАННЫЕ =====================
+   Формат строки: "английский|как читается|перевод"           */
+
+const SECTIONS = [
+  {id:'exam', icon:'🎯', title:'Завтра', full:'К паре 6 ноября'},
+  {id:'read', icon:'📖', title:'Чтение', full:'Теория чтения и перевода'},
+  {id:'sec',  icon:'🛡️', title:'ИБ', full:'Информационная безопасность'},
+  {id:'talk', icon:'💬', title:'Разговор', full:'Говорить по-английски'}
+];
+
+const DECKS = [
+/* ---------- ЗАВТРА ---------- */
+{id:'tiu', sec:'exam', icon:'🏛️', title:'Слова из текста про ТИУ', sub:'Unit 1, задание 3', items:[
+"to establish|ту истаблиш|основывать, устанавливать",
+"branch|бранч|филиал, отделение",
+"prolific|пролифик|плодотворный",
+"existence|игзистэнс|существование",
+"broadcasting|бродкастинг|вещание, передача",
+"extramural|экстрэмьюрал|заочный",
+"to introduce|ту интрэдьюс|вводить, внедрять",
+"to develop|ту дивелоп|развивать, разрабатывать",
+"demand|димаанд|требование, потребность",
+"aim|эйм|цель",
+"institution|инститьюшн|учебное заведение",
+"consolidation|консолидейшн|объединение",
+"to consist of|ту консист ов|состоять из",
+"degree|дигри|степень",
+"to run classes|ту ран класиз|вести занятия",
+"credit|кредит|зачёт",
+"to do one's best|ту ду уанз бест|стараться изо всех сил",
+"to connect|ту кэнэкт|соединять",
+"to be proud of|ту би прауд ов|гордиться",
+"to contain|ту кэнтейн|содержать",
+"to divide into|ту дивайд инту|делить на",
+"mark|маак|оценка, отметка",
+"to be rich in|ту би рич ин|быть богатым чем-то",
+"to take part|ту тейк парт|участвовать"]},
+{id:'u5buy', sec:'exam', icon:'🛍️', title:'Unit 5: Покупки', sub:'Buying and selling', items:[
+"afford|эфоод|позволить себе (по деньгам)",
+"bargain|баагин|выгодная покупка",
+"cash|кэш|наличные",
+"change|чейндж|сдача, мелочь",
+"discount|дискаунт|скидка",
+"receipt|рисиит|чек",
+"refund|рифанд|возврат денег",
+"sale|сейл|распродажа",
+"value for money|вэлью фо мани|хорошее соотношение цены и качества",
+"waste|уэйст|тратить впустую"]},
+{id:'u5bank', sec:'exam', icon:'🏦', title:'Unit 5: Деньги и банк', sub:'Money and banking', items:[
+"ATM|эй-ти-эм|банкомат",
+"cashpoint|кэшпойнт|банкомат",
+"bank charges|бэнк чааджиз|банковская комиссия",
+"bank fees|бэнк фииз|банковская комиссия",
+"bill|бил|счёт (который надо оплатить)",
+"current account|карэнт экаунт|текущий счёт",
+"savings account|сейвингз экаунт|сберегательный счёт",
+"interest|интрэст|проценты",
+"overdraft|оувэдраафт|овердрафт (уйти в минус)",
+"get into debt|гет инту дет|влезть в долги",
+"give somebody a loan|гив самбэди э лоун|дать кому-то кредит",
+"lend money|ленд мани|одолжить деньги (дать кому-то)",
+"borrow|бороу|занять (взять у кого-то)",
+"owe|оу|быть должным",
+"withdraw money|уиздроо мани|снять деньги"]},
+{id:'u5phr', sec:'exam', icon:'🔁', title:'Unit 5: Фразовые глаголы', sub:'Phrasal verbs: money and shopping', items:[
+"come to|кам ту|составлять (о сумме)",
+"cut back|кат бэк|сократить расходы",
+"get by|гет бай|сводить концы с концами",
+"give away|гив эуэй|отдать бесплатно",
+"pay back|пей бэк|вернуть долг",
+"pick up|пик ап|купить по случаю, ухватить",
+"sell out|сел аут|распродать (всё раскупили)",
+"set aside|сет эсайд|отложить (деньги)",
+"splash out|сплэш аут|шикануть, потратить много"]},
+{id:'u5hand', sec:'exam', icon:'✍️', title:'Unit 5: Фразы ручкой', sub:'подписи в учебнике', items:[
+"I'd like to open an account|айд лайк ту оупэн эн экаунт|я хочу открыть счёт",
+"What documents do I need to provide?|уот докьюментс ду ай нид ту прэвайд?|какие документы нужно предоставить?",
+"pay money into the account|пей мани инту зи экаунт|положить деньги на счёт",
+"withdraw some money from my account|уиздроо сам мани фром май экаунт|снять деньги со своего счёта",
+"waiting in a queue|уэйтинг ин э кью|ждать в очереди"]},
+{id:'u1study', sec:'exam', icon:'🎓', title:'Unit 1: Учёба', sub:'Studying at university', items:[
+"assignment|эсайнмэнт|задание",
+"cheat|чиит|списывать, жульничать",
+"continuous assessment|кэнтиньюэс эсесмэнт|текущий контроль (оценки в течение семестра)",
+"course|коос|курс",
+"coursework|коосуёк|курсовая работа",
+"degree|дигри|степень (бакалавра, магистра)",
+"fail|фейл|провалить (экзамен)",
+"pass|паас|сдать (экзамен)",
+"resit|рисит|пересдать",
+"grade|грейд|оценка",
+"mark|маак|оценка",
+"graduate|грэджуэйт|окончить вуз",
+"lecture|лекчэ|лекция",
+"notes|ноутс|конспект",
+"revise|ривайз|повторять (к экзамену)",
+"term|тёём|семестр",
+"tutor|тьютэ|преподаватель, наставник",
+"tutorial|тьюториэл|занятие в маленькой группе",
+"master's|маастэз|магистратура",
+"undergraduate|андэгрэджуэт|студент бакалавриата",
+"hands-on|хэндз-он|практический",
+"scholarship|сколэшип|стипендия"]},
+{id:'u1life', sec:'exam', icon:'🏠', title:'Unit 1: Жизнь в университете', sub:'Life at university', items:[
+"become independent|бикам индипендэнт|стать самостоятельным",
+"extracurricular activities|экстрэкэрикьюлэ эктивитиз|внеучебные занятия",
+"hall of residence|хол ов резидэнс|общежитие",
+"make new friends|мейк нью френдз|заводить новых друзей",
+"student facilities|стьюдэнт фэсилитиз|условия для студентов",
+"student loan|стьюдэнт лоун|студенческий кредит",
+"study abroad|стади эброод|учиться за границей"]},
+
+/* ---------- ЧТЕНИЕ ---------- */
+{id:'freq', sec:'read', icon:'⭐', title:'60 самых частых слов', sub:'они есть в любом тексте', items:[
+"the|зе|определённый артикль (не переводится)",
+"a / an|э / эн|неопределённый артикль (не переводится)",
+"and|энд|и",
+"or|о|или",
+"but|бат|но",
+"is|из|есть, является (он/она/оно)",
+"are|а|есть, являются (мы/вы/они)",
+"was|воз|был, была",
+"were|вё|были",
+"have|хэв|иметь",
+"has|хэз|имеет (он/она)",
+"do|ду|делать",
+"does|даз|делает (он/она)",
+"did|дид|делал",
+"will|уил|будет (будущее время)",
+"can|кэн|могу, умею",
+"not|нот|не",
+"this|зис|этот",
+"that|зэт|тот; что; который",
+"these|зиз|эти",
+"those|зоуз|те",
+"there|зэа|там",
+"here|хиэ|здесь",
+"it|ит|это, он, она (о предметах)",
+"they|зэй|они",
+"we|уи|мы",
+"you|ю|ты, вы",
+"he|хи|он",
+"she|ши|она",
+"which|уич|который",
+"who|ху|кто; который",
+"what|уот|что, какой",
+"when|уэн|когда",
+"where|уэа|где",
+"why|уай|почему",
+"how|хау|как",
+"with|уиз|с",
+"without|уизаут|без",
+"from|фром|из, от",
+"for|фо|для",
+"of|ов|(родительный падеж) — «чего?»",
+"to|ту|к, в; (частица перед глаголом)",
+"in|ин|в",
+"on|он|на",
+"at|эт|у, в, на (место, время)",
+"by|бай|кем, чем; около",
+"about|эбаут|о; около",
+"after|аафтэ|после",
+"before|бифо|до, перед",
+"because|бикоз|потому что",
+"also|олсоу|также",
+"only|оунли|только",
+"very|вери|очень",
+"many|мэни|много (можно посчитать)",
+"much|мач|много (нельзя посчитать)",
+"more|мо|больше, более",
+"some|сам|несколько, какой-то",
+"all|ол|все, всё",
+"other|азэ|другой",
+"new|нью|новый"]},
+
+/* ---------- ИБ ---------- */
+{id:'sec1', sec:'sec', icon:'🔐', title:'Основы ИБ', sub:'главные понятия', items:[
+"information security|инфэмейшн сикьюрити|информационная безопасность",
+"cybersecurity|сайбэсикьюрити|кибербезопасность",
+"confidentiality|конфиденшиэлити|конфиденциальность",
+"integrity|интегрити|целостность",
+"availability|эвейлэбилити|доступность",
+"authentication|оосентикейшн|аутентификация (проверка, кто ты)",
+"authorization|оосэрайзейшн|авторизация (проверка прав)",
+"access control|эксес кэнтроул|управление доступом",
+"unauthorized access|аносэрайзд эксес|несанкционированный доступ",
+"data|дейтэ|данные",
+"threat|срет|угроза",
+"vulnerability|валнэрэбилити|уязвимость",
+"risk|риск|риск",
+"asset|эсет|актив (то, что защищаем)",
+"security policy|сикьюрити полиси|политика безопасности",
+"privacy|прайвэси|конфиденциальность личных данных",
+"incident|инсидэнт|инцидент",
+"to protect|ту прэтект|защищать",
+"protection|прэтекшн|защита"]},
+{id:'sec2', sec:'sec', icon:'🦠', title:'Угрозы и атаки', sub:'threats and attacks', items:[
+"attack|этэк|атака",
+"attacker|этэкэ|злоумышленник",
+"hacker|хэкэ|хакер",
+"malware|мэлуэа|вредоносное ПО",
+"virus|вайрэс|вирус",
+"worm|уём|червь",
+"Trojan|троуджэн|троян",
+"ransomware|рэнсэмуэа|программа-вымогатель",
+"spyware|спайуэа|шпионская программа",
+"phishing|фишинг|фишинг (выманивание данных)",
+"social engineering|соушл энджиниэринг|социальная инженерия",
+"DDoS attack|ди-дос этэк|DDoS-атака (перегрузка сайта)",
+"brute force|брут фоос|перебор паролей",
+"data breach|дейтэ бриич|утечка данных",
+"exploit|иксплойт|эксплойт (код для взлома)",
+"backdoor|бэкдо|бэкдор, скрытый вход",
+"botnet|ботнет|ботнет (сеть заражённых компьютеров)",
+"spam|спэм|спам",
+"to steal|ту стил|красть",
+"to damage|ту дэмидж|повреждать"]},
+{id:'sec3', sec:'sec', icon:'🧱', title:'Защита', sub:'protection tools', items:[
+"firewall|файэуол|межсетевой экран",
+"antivirus|энтивайрэс|антивирус",
+"encryption|инкрипшн|шифрование",
+"decryption|дикрипшн|расшифрование",
+"password|паасуёд|пароль",
+"strong password|стронг паасуёд|надёжный пароль",
+"two-factor authentication|ту-фэктэ оосентикейшн|двухфакторная аутентификация",
+"backup|бэкап|резервная копия",
+"update|апдейт|обновление",
+"patch|пэтч|исправление (заплатка)",
+"intrusion detection system|интружн дитекшн систэм|система обнаружения вторжений",
+"VPN|ви-пи-эн|VPN, защищённое соединение",
+"certificate|сэтификэт|сертификат",
+"monitoring|мониторинг|мониторинг, наблюдение",
+"security audit|сикьюрити оодит|аудит безопасности",
+"penetration testing|пенитрейшн тестинг|тестирование на проникновение",
+"to detect|ту дитект|обнаруживать",
+"to prevent|ту привент|предотвращать"]},
+{id:'sec4', sec:'sec', icon:'🖥️', title:'Компьютеры и сети', sub:'computers and networks', items:[
+"computer|кэмпьютэ|компьютер",
+"network|нетуёк|сеть",
+"server|сёвэ|сервер",
+"software|софтуэа|программное обеспечение",
+"hardware|хаадуэа|оборудование, «железо»",
+"operating system|опэрейтинг систэм|операционная система",
+"database|дейтэбейс|база данных",
+"cloud|клауд|облако",
+"traffic|трэфик|трафик",
+"protocol|проутэкол|протокол",
+"IP address|ай-пи эдрес|IP-адрес",
+"user|юзэ|пользователь",
+"administrator|эдминистрейтэ|администратор",
+"account|экаунт|учётная запись",
+"to log in|ту лог ин|войти в систему",
+"to install|ту инстол|устанавливать",
+"device|дивайс|устройство",
+"file|файл|файл"]},
+{id:'sec5', sec:'sec', icon:'🔑', title:'Криптография', sub:'cryptography', items:[
+"cryptography|криптогрэфи|криптография",
+"key|ки|ключ",
+"public key|паблик ки|открытый ключ",
+"private key|прайвэт ки|закрытый ключ",
+"cipher|сайфэ|шифр",
+"plaintext|плейнтекст|открытый текст",
+"ciphertext|сайфэтекст|шифротекст",
+"hash|хэш|хеш",
+"digital signature|диджитл сигнэчэ|электронная подпись",
+"algorithm|элгэризм|алгоритм",
+"to encrypt|ту инкрипт|шифровать",
+"to decrypt|ту дикрипт|расшифровывать"]},
+{id:'sec6', sec:'sec', icon:'🗣️', title:'Фразы, чтобы говорить про ИБ', sub:'готовые куски для рассказа', items:[
+"I study information security|ай стади инфэмейшн сикьюрити|я изучаю информационную безопасность",
+"My future profession is ...|май фьючэ профешн из ...|моя будущая профессия — ...",
+"It is very important today|ит из вери импотэнт тудэй|сегодня это очень важно",
+"A security specialist protects data|э сикьюрити спешиэлист прэтектс дейтэ|специалист по безопасности защищает данные",
+"The main threats are ...|зе мейн сретс а ...|главные угрозы — это ...",
+"To protect your data, you should ...|ту прэтект ё дейтэ, ю шуд ...|чтобы защитить данные, нужно ...",
+"Never share your password|невэ шеа ё паасуёд|никогда не сообщай свой пароль",
+"Hackers can steal personal data|хэкэз кэн стил пёсэнл дейтэ|хакеры могут украсть личные данные",
+"This is a serious problem|зис из э сиэриэс проблэм|это серьёзная проблема",
+"In the future I want to work in a bank|ин зе фьючэ ай уонт ту уёк ин э бэнк|в будущем я хочу работать в банке"]},
+
+/* ---------- РАЗГОВОР ---------- */
+{id:'t1', sec:'talk', icon:'👋', title:'Знакомство', sub:'первые фразы', items:[
+"Hello! / Hi!|хэлоу! / хай!|здравствуйте! / привет!",
+"Good morning!|гуд монинг!|доброе утро!",
+"My name is ...|май нейм из ...|меня зовут ...",
+"What's your name?|уотс ё нейм?|как тебя зовут?",
+"Nice to meet you|найс ту миит ю|приятно познакомиться",
+"How are you?|хау а ю?|как дела?",
+"I'm fine, thank you. And you?|айм файн, сэнк ю. энд ю?|хорошо, спасибо. а у тебя?",
+"I'm from Tyumen|айм фром Тюмень|я из Тюмени",
+"Where are you from?|уэа а ю фром?|откуда ты?",
+"I'm eighteen years old|айм эйтиин йиэз оулд|мне восемнадцать лет",
+"I'm a first-year student|айм э фёрст-йиэ стьюдэнт|я студент(ка) первого курса",
+"What do you study?|уот ду ю стади?|что ты изучаешь?",
+"See you later!|си ю лейтэ!|увидимся!",
+"Goodbye!|гудбай!|до свидания!"]},
+{id:'t2', sec:'talk', icon:'🆘', title:'Спасательные фразы', sub:'если не поняла', items:[
+"Sorry, I don't understand|сори, ай доунт андэстэнд|извините, я не понимаю",
+"Could you repeat, please?|куд ю рипиит, плиз?|повторите, пожалуйста",
+"Could you speak more slowly?|куд ю спиик мо слоули?|говорите медленнее, пожалуйста",
+"What does ... mean?|уот даз ... миин?|что значит ...?",
+"How do you say ... in English?|хау ду ю сей ... ин инглиш?|как сказать ... по-английски?",
+"I don't know|ай доунт ноу|я не знаю",
+"Let me think|лет ми синк|дайте подумать",
+"Can I ask a question?|кэн ай аск э квесчн?|можно задать вопрос?",
+"Sorry, I'm late|сори, айм лейт|извините, я опоздала",
+"May I come in?|мей ай кам ин?|можно войти?",
+"I'm ready|айм реди|я готова",
+"Excuse me|икскьюз ми|простите (чтобы обратиться)",
+"Thank you very much|сэнк ю вери мач|большое спасибо",
+"You're welcome|ё уэлкэм|пожалуйста (в ответ на спасибо)"]},
+{id:'t3', sec:'talk', icon:'💭', title:'Мнение и связки', sub:'чтобы речь звучала связно', items:[
+"I think that ...|ай синк зэт ...|я думаю, что ...",
+"In my opinion ...|ин май эпиньэн ...|по моему мнению ...",
+"I agree|ай эгрии|я согласна",
+"I don't agree|ай доунт эгрии|я не согласна",
+"I'm not sure|айм нот шуэ|я не уверена",
+"First of all ...|фёрст ов ол ...|прежде всего ...",
+"Also ...|олсоу ...|также ...",
+"However ...|хауэвэ ...|однако ...",
+"Because ...|бикоз ...|потому что ...",
+"So ...|соу ...|поэтому ...",
+"For example ...|фор игзаампл ...|например ...",
+"Finally ...|файнэли ...|наконец ...",
+"To sum up ...|ту сам ап ...|подводя итог ...",
+"I like ... / I don't like ...|ай лайк ... / ай доунт лайк ...|мне нравится ... / мне не нравится ...",
+"I want to ...|ай уонт ту ...|я хочу ...",
+"I can ... / I can't ...|ай кэн ... / ай каант ...|я могу ... / я не могу ..."]},
+{id:'t4', sec:'talk', icon:'☕', title:'Каждый день', sub:'повседневные фразы', items:[
+"I get up at seven|ай гет ап эт севн|я встаю в семь",
+"I go to university|ай гоу ту юнивёрсити|я хожу в университет",
+"I have classes every day|ай хэв клаасиз эври дей|у меня пары каждый день",
+"In my free time I read books|ин май фрии тайм ай рид букс|в свободное время я читаю книги",
+"I like listening to music|ай лайк лиснинг ту мьюзик|я люблю слушать музыку",
+"I live in a hall of residence|ай лив ин э хол ов резидэнс|я живу в общежитии",
+"I live with my family|ай лив уиз май фэмили|я живу с семьёй",
+"What time is it?|уот тайм из ит?|который час?",
+"How much is it?|хау мач из ит?|сколько это стоит?",
+"Can I pay by card?|кэн ай пей бай каад?|можно оплатить картой?",
+"I'm hungry|айм хангри|я голодная",
+"I'm tired|айм тайэд|я устала",
+"Let's go!|летс гоу!|пойдём!",
+"Good luck!|гуд лак!|удачи!"]}
+].map(d=>({...d, items:d.items.map(s=>{const [en,pr,ru]=s.split('|');return {en,pr,ru};})}));
+
+const TEXTS = [
+/* ---------- ЗАВТРА ---------- */
+{id:'retell', sec:'exam', icon:'📝', title:'Пересказ: ТИУ', sub:'Industrial University of Tyumen', s:[
+"Industrial University of Tyumen is a young university with a complicated history.|Индастриал юнивёрсити ов Тюмень из э янг юнивёрсити уиз э комплицейтид хистори.|Индустриальный университет Тюмени — молодой университет со сложной историей.",
+"It was established in 1956 as a branch of Ural Polytechnic Institute.|Ит воз истаблишт ин найнтин фифти сикс эз э бранч ов Урал Политекник Инститьют.|Он был основан в 1956 году как филиал Уральского политехнического института.",
+"In 1963 it became Tyumen Industrial Institute.|Ин найнтин сиксти сри ит бикейм Тюмень Индастриал Инститьют.|В 1963 году он стал Тюменским индустриальным институтом.",
+"The Institute trained specialists for the oil and gas industry.|Зе инститьют трейнд спешиалистс фо зе ойл энд гэс индастри.|Институт готовил специалистов для нефтегазовой промышленности.",
+"The number of students increased from 750 to 9000.|Зе намбэр ов стьюдентс инкрист фром севен хандрэд фифти ту найн саузенд.|Количество студентов выросло с 750 до 9000.",
+"The first rector Anatoly Kosukhin established a training TV centre for extramural students.|Зе фёрст ректор Анатолий Косухин истаблишт э трейнинг ти-ви сентэ фо экстрэмьюрал стьюдентс.|Первый ректор Анатолий Косухин основал учебный телецентр для студентов-заочников.",
+"In 1994 it got the status of university.|Ин найнтин найнти фо ит гот зе стейтас ов юнивёрсити.|В 1994 году он получил статус университета.",
+"In 2016 two universities were consolidated into Industrial University of Tyumen.|Ин твенти сикстин ту юнивёрситиз вё консолидейтид инту Индастриал Юнивёрсити ов Тюмень.|В 2016 году два университета объединили в Индустриальный университет Тюмени.",
+"Now the University consists of 7 institutes and several branches.|Нау зе юнивёрсити консистс ов севен инститьютс энд севрал бранчиз.|Сейчас университет состоит из 7 институтов и нескольких филиалов.",
+"About 16 thousand students study here, some of them from more than 25 countries.|Эбаут сикстин саузенд стьюдентс стади хиэ, сам ов зем фром мо зэн твенти файв кантриз.|Здесь учатся около 16 тысяч студентов, некоторые из них из более чем 25 стран.",
+"The library contains about one million books.|Зе лайбрэри контейнз эбаут уан миллион букс.|Библиотека содержит около миллиона книг.",
+"Students can take part in festivals and sports competitions.|Стьюдентс кэн тейк парт ин фестивалз энд спортс компетишнз.|Студенты могут участвовать в фестивалях и спортивных соревнованиях.",
+"I am proud of my University and I'll do my best to be a good student.|Ай эм прауд ов май юнивёрсити энд айл ду май бест ту би э гуд стьюдент.|Я горжусь своим университетом и буду стараться быть хорошим студентом."]},
+{id:'text4', sec:'exam', icon:'4️⃣', title:'Текст 4 (наизусть)', sub:'What do you want from work?', s:[
+"I'd like to do a job where they offer in-service training.|Айд лайк ту ду э джоб уэа зэй офэ ин-сёрвис трейнинг.|Я бы хотела работу, где обучают без отрыва от работы.",
+"It's great to have the chance to keep on learning new things.|Итс грейт ту хэв зе чанс ту кип он лёрнинг нью сингз.|Здорово иметь возможность всё время узнавать что-то новое.",
+"When a job is interesting and there are always new opportunities,|Уэн э джоб из интрэстинг энд зэа а олвэйз нью опэтьюнитиз,|Когда работа интересная и всегда есть новые возможности,",
+"it's easier to stay motivated in your job.|итс изиэ ту стэй моутивейтид ин ё джоб.|легче сохранять мотивацию."]},
+{id:'text9', sec:'exam', icon:'9️⃣', title:'Текст 9 (наизусть)', sub:'What do you want from work?', s:[
+"I'd like a job with prospects.|Айд лайк э джоб уиз проспектс.|Я хочу работу с перспективами.",
+"The idea of getting ahead, taking on more responsibility and getting a promotion is important to me.|Зи айдиэ ов гэтинг эхэд, тейкинг он мо риспонсэбилити энд гэтинг э промоушн из импотэнт ту ми.|Для меня важно продвигаться вперёд, брать на себя больше ответственности и получать повышение.",
+"I want my job to be challenging and to offer me goals.|Ай уонт май джоб ту би чэлинджинг энд ту офэ ми гоулз.|Я хочу, чтобы работа была сложной и ставила передо мной цели."]},
+
+/* ---------- ЧТЕНИЕ: практика ---------- */
+{id:'p1', sec:'read', icon:'🟢', title:'Практика 1: My day', sub:'лёгкий текст', practice:true, s:[
+"My name is Kate and I am a student.|Май нейм из Кейт энд ай эм э стьюдэнт.|Меня зовут Катя, и я студентка.",
+"I get up at seven o'clock every morning.|Ай гет ап эт севн эклок эври монинг.|Я встаю в семь часов каждое утро.",
+"I have breakfast and go to university by bus.|Ай хэв брекфэст энд гоу ту юнивёрсити бай бас.|Я завтракаю и еду в университет на автобусе.",
+"My classes start at nine.|Май клаасиз стаат эт найн.|Мои занятия начинаются в девять.",
+"After classes I go to the library.|Аафтэ клаасиз ай гоу ту зе лайбрэри.|После занятий я иду в библиотеку.",
+"In the evening I do my homework and watch films.|Ин зи иивнинг ай ду май хоумуёк энд уоч филмз.|Вечером я делаю домашнее задание и смотрю фильмы.",
+"I go to bed at eleven.|Ай гоу ту бед эт илевн.|Я ложусь спать в одиннадцать."]},
+{id:'p2', sec:'read', icon:'🟡', title:'Практика 2: Computers', sub:'средний текст', practice:true, s:[
+"Computers are an important part of our life.|Кэмпьютэз а эн импотэнт паат ов ауэ лайф.|Компьютеры — важная часть нашей жизни.",
+"We use them at home, at work and at university.|Уи юз зем эт хоум, эт уёк энд эт юнивёрсити.|Мы используем их дома, на работе и в университете.",
+"The first computers were very big and slow.|Зе фёрст кэмпьютэз вё вери биг энд слоу.|Первые компьютеры были очень большими и медленными.",
+"Modern computers are small, fast and powerful.|Модэн кэмпьютэз а смол, фааст энд пауэфул.|Современные компьютеры маленькие, быстрые и мощные.",
+"A computer consists of hardware and software.|Э кэмпьютэ кэнсистс ов хаадуэа энд софтуэа.|Компьютер состоит из оборудования и программного обеспечения.",
+"Programs are written by programmers.|Проуграмз а ритн бай проуграмэз.|Программы пишутся программистами.",
+"Without computers, the Internet would not exist.|Уизаут кэмпьютэз, зи интэнет вуд нот игзист.|Без компьютеров интернет не существовал бы."]},
+{id:'p3', sec:'read', icon:'🔴', title:'Практика 3: The Internet', sub:'текст посложнее', practice:true, s:[
+"The Internet was created in the USA in the 1960s.|Зи интэнет воз криэйтид ин зе ю-эс-эй ин зе найнтин сикстиз.|Интернет был создан в США в 1960-х годах.",
+"At first, it was used only by scientists and the military.|Эт фёрст, ит воз юзд оунли бай сайэнтистс энд зе милитэри.|Сначала им пользовались только учёные и военные.",
+"Today, more than five billion people have access to the Internet.|Тудэй, мо зэн файв билиэн пипл хэв эксес ту зи интэнет.|Сегодня более пяти миллиардов людей имеют доступ к интернету.",
+"People use it to communicate, study, work and buy things.|Пипл юз ит ту кэмьюникейт, стади, уёк энд бай сингз.|Люди используют его, чтобы общаться, учиться, работать и покупать вещи.",
+"However, the Internet has become dangerous.|Хауэвэ, зи интэнет хэз бикам дейнджэрэс.|Однако интернет стал опасным.",
+"Criminals can steal personal information and money.|Криминлз кэн стил пёсэнл инфэмейшн энд мани.|Преступники могут украсть личную информацию и деньги.",
+"That is why information security is so important.|Зэт из уай инфэмейшн сикьюрити из соу импотэнт.|Вот почему информационная безопасность так важна."]},
+
+/* ---------- ИБ: тексты ---------- */
+{id:'s_prof', sec:'sec', icon:'👩‍💻', title:'My future profession', sub:'рассказ о своей профессии', s:[
+"I am a first-year student at Industrial University of Tyumen.|Ай эм э фёрст-йиэ стьюдэнт эт Индастриал Юнивёрсити ов Тюмень.|Я студентка первого курса Индустриального университета Тюмени.",
+"My future profession is information security.|Май фьючэ профешн из инфэмейшн сикьюрити.|Моя будущая профессия — информационная безопасность.",
+"I chose this profession because it is interesting and important.|Ай чоуз зис профешн бикоз ит из интрэстинг энд импотэнт.|Я выбрала эту профессию, потому что она интересная и важная.",
+"Today computers and the Internet are everywhere.|Тудэй кэмпьютэз энд зи интэнет а эвриуэа.|Сегодня компьютеры и интернет повсюду.",
+"Companies and people need protection from cyber attacks.|Кампэниз энд пипл нид прэтекшн фром сайбэ этэкс.|Компаниям и людям нужна защита от кибератак.",
+"A security specialist protects data, networks and computer systems.|Э сикьюрити спешиэлист прэтектс дейтэ, нетуёкс энд кэмпьютэ систэмз.|Специалист по безопасности защищает данные, сети и компьютерные системы.",
+"At university we study mathematics, programming, networks and cryptography.|Эт юнивёрсити уи стади мэсэмэтикс, проугрэминг, нетуёкс энд криптогрэфи.|В университете мы изучаем математику, программирование, сети и криптографию.",
+"In the future I want to work in a bank or in a big IT company.|Ин зе фьючэ ай уонт ту уёк ин э бэнк о ин э биг ай-ти кампэни.|В будущем я хочу работать в банке или в большой IT-компании.",
+"I think this profession has a great future.|Ай синк зис профешн хэз э грейт фьючэ.|Я думаю, у этой профессии большое будущее."]},
+{id:'s_what', sec:'sec', icon:'🔺', title:'What is information security?', sub:'триада CIA', s:[
+"Information security is the protection of information from unauthorized access.|Инфэмейшн сикьюрити из зе прэтекшн ов инфэмейшн фром аносэрайзд эксес.|Информационная безопасность — это защита информации от несанкционированного доступа.",
+"It is based on three main principles.|Ит из бейст он сри мейн принсиплз.|Она основана на трёх главных принципах.",
+"They are called the CIA triad.|Зэй а колд зе си-ай-эй трайэд.|Их называют триадой CIA.",
+"Confidentiality means that only authorized people can see the data.|Конфиденшиэлити минз зэт оунли оосэрайзд пипл кэн си зе дейтэ.|Конфиденциальность означает, что только люди с доступом могут видеть данные.",
+"Integrity means that nobody can change the data without permission.|Интегрити минз зэт ноубоди кэн чейндж зе дейтэ уизаут пэмишн.|Целостность означает, что никто не может изменить данные без разрешения.",
+"Availability means that the data is available when users need it.|Эвейлэбилити минз зэт зе дейтэ из эвейлэбл уэн юзэз нид ит.|Доступность означает, что данные доступны, когда они нужны пользователям.",
+"If one of these principles is broken, it is a security incident.|Иф уан ов зиз принсиплз из броукэн, ит из э сикьюрити инсидэнт.|Если один из этих принципов нарушен, это инцидент безопасности."]},
+{id:'s_threat', sec:'sec', icon:'⚠️', title:'Cyber threats', sub:'виды угроз', s:[
+"There are many types of cyber threats.|Зэа а мэни тайпс ов сайбэ сретс.|Существует много видов киберугроз.",
+"Malware is software that damages computers.|Мэлуэа из софтуэа зэт дэмиджиз кэмпьютэз.|Вредоносное ПО — это программы, которые повреждают компьютеры.",
+"Viruses, worms and Trojans are types of malware.|Вайрэсиз, уёмз энд троуджэнз а тайпс ов мэлуэа.|Вирусы, черви и трояны — виды вредоносного ПО.",
+"Ransomware encrypts files and asks for money.|Рэнсэмуэа инкриптс файлз энд аскс фо мани.|Программа-вымогатель шифрует файлы и требует денег.",
+"Phishing is a fake email or website that steals passwords.|Фишинг из э фейк имейл о уэбсайт зэт стилз паасуёдз.|Фишинг — это поддельное письмо или сайт, который крадёт пароли.",
+"A DDoS attack makes a website unavailable.|Э ди-дос этэк мейкс э уэбсайт анэвейлэбл.|DDoS-атака делает сайт недоступным.",
+"Social engineering is when attackers trick people.|Соушл энджиниэринг из уэн этэкэз трик пипл.|Социальная инженерия — это когда злоумышленники обманывают людей."]},
+{id:'s_protect', sec:'sec', icon:'🛡️', title:'How to protect your data', sub:'правила защиты', s:[
+"Use strong passwords and do not use the same password everywhere.|Юз стронг паасуёдз энд ду нот юз зе сейм паасуёд эвриуэа.|Используй надёжные пароли и не используй один пароль везде.",
+"Turn on two-factor authentication.|Тёён он ту-фэктэ оосентикейшн.|Включи двухфакторную аутентификацию.",
+"Update your software regularly.|Апдейт ё софтуэа регьюлэли.|Регулярно обновляй программы.",
+"Install antivirus and use a firewall.|Инстол энтивайрэс энд юз э файэуол.|Установи антивирус и используй межсетевой экран.",
+"Make backups of important files.|Мейк бэкапс ов импотэнт файлз.|Делай резервные копии важных файлов.",
+"Do not open suspicious links and attachments.|Ду нот оупэн сэспишэс линкс энд этэчмэнтс.|Не открывай подозрительные ссылки и вложения.",
+"Be careful with public Wi-Fi.|Би кэафул уиз паблик уай-фай.|Будь осторожна с общественным Wi-Fi."]},
+
+/* ---------- РАЗГОВОР: тексты и диалоги ---------- */
+{id:'d_me', sec:'talk', icon:'🙋‍♀️', title:'Рассказ о себе', sub:'вставь своё имя и факты', s:[
+"Hello! My name is ... .|Хэлоу! Май нейм из ... .|Привет! Меня зовут ... .",
+"I am eighteen years old.|Ай эм эйтиин йиэз оулд.|Мне восемнадцать лет.",
+"I am from Tyumen.|Ай эм фром Тюмень.|Я из Тюмени.",
+"I am a first-year student at Industrial University of Tyumen.|Ай эм э фёрст-йиэ стьюдэнт эт Индастриал Юнивёрсити ов Тюмень.|Я студентка первого курса Индустриального университета Тюмени.",
+"I study information security.|Ай стади инфэмейшн сикьюрити.|Я изучаю информационную безопасность.",
+"In my free time I like reading, music and walking with friends.|Ин май фрии тайм ай лайк риидинг, мьюзик энд уокинг уиз френдз.|В свободное время я люблю читать, музыку и гулять с друзьями.",
+"I want to become a good specialist.|Ай уонт ту бикам э гуд спешиэлист.|Я хочу стать хорошим специалистом."]},
+{id:'d_meet', sec:'talk', icon:'🤝', title:'Диалог: знакомство', sub:'два студента', s:[
+"A: Hi! My name is Anna. What's your name?|Хай! Май нейм из Анна. Уотс ё нейм?|Привет! Меня зовут Анна. Как тебя зовут?",
+"B: Hi, Anna! I'm Kate. Nice to meet you.|Хай, Анна! Айм Кейт. Найс ту миит ю.|Привет, Анна! Я Катя. Приятно познакомиться.",
+"A: Nice to meet you too. Where are you from?|Найс ту миит ю туу. Уэа а ю фром?|Мне тоже. Откуда ты?",
+"B: I'm from Tyumen. And you?|Айм фром Тюмень. Энд ю?|Я из Тюмени. А ты?",
+"A: I'm from Surgut. What do you study?|Айм фром Сургут. Уот ду ю стади?|Я из Сургута. Что ты изучаешь?",
+"B: I study information security. And you?|Ай стади инфэмейшн сикьюрити. Энд ю?|Я изучаю информационную безопасность. А ты?",
+"A: I study oil and gas engineering.|Ай стади ойл энд гэс энджиниэринг.|Я учусь на нефтегазовом деле.",
+"B: Cool! See you later!|Куул! Си ю лейтэ!|Круто! Увидимся!"]},
+{id:'d_bank', sec:'talk', icon:'🏦', title:'Диалог: в банке', sub:'слова из Unit 5', s:[
+"A: Good morning! How can I help you?|Гуд монинг! Хау кэн ай хелп ю?|Доброе утро! Чем могу помочь?",
+"B: Good morning! I'd like to open an account.|Гуд монинг! Айд лайк ту оупэн эн экаунт.|Доброе утро! Я хочу открыть счёт.",
+"A: A current account or a savings account?|Э карэнт экаунт о э сейвингз экаунт?|Текущий или сберегательный счёт?",
+"B: A current account, please. What documents do I need to provide?|Э карэнт экаунт, плиз. Уот докьюментс ду ай нид ту прэвайд?|Текущий, пожалуйста. Какие документы нужно предоставить?",
+"A: Only your passport.|Оунли ё паaспот.|Только паспорт.",
+"B: Can I pay money into the account today?|Кэн ай пей мани инту зи экаунт тудэй?|Могу я положить деньги на счёт сегодня?",
+"A: Yes, of course. You can withdraw money from any ATM.|Йес, ов коос. Ю кэн уиздроо мани фром эни эй-ти-эм.|Да, конечно. Снять деньги можно в любом банкомате.",
+"B: Are there any bank fees?|А зэа эни бэнк фииз?|Есть ли банковская комиссия?",
+"A: No, there are no bank charges for students.|Ноу, зэа а ноу бэнк чааджиз фо стьюдэнтс.|Нет, для студентов комиссии нет.",
+"B: Great, thank you!|Грейт, сэнк ю!|Отлично, спасибо!"]},
+{id:'d_class', sec:'talk', icon:'🏫', title:'Диалог: на паре', sub:'с преподавателем', s:[
+"Student: Sorry, I'm late. May I come in?|Сори, айм лейт. Мей ай кам ин?|Извините, я опоздала. Можно войти?",
+"Teacher: Yes, come in, please. Sit down.|Йес, кам ин, плиз. Сит даун.|Да, входите, пожалуйста. Садитесь.",
+"Teacher: Are you ready to retell the text?|А ю реди ту рител зе текст?|Вы готовы пересказать текст?",
+"Student: Yes, I'm ready.|Йес, айм реди.|Да, я готова.",
+"Teacher: Good. Please start.|Гуд. Плиз стаат.|Хорошо. Начинайте.",
+"Student: Sorry, could you repeat the question, please?|Сори, куд ю рипиит зе квесчн, плиз?|Извините, не могли бы вы повторить вопрос?",
+"Teacher: Of course. When was the university established?|Ов коос. Уэн воз зе юнивёрсити истаблишт?|Конечно. Когда был основан университет?",
+"Student: It was established in 1956.|Ит воз истаблишт ин найнтин фифти сикс.|Он был основан в 1956 году.",
+"Teacher: Excellent! Well done.|Экселэнт! Уэл дан.|Отлично! Молодец."]}
+].map(t=>({...t, s:t.s.map(x=>{const [en,pr,ru]=x.split('|');return {en,pr,ru};})}));
+
+/* Словарь для перевода слов по нажатию (тексты к завтра) */
+const GLOSS = {
+"industrial":"индустриальный","university":"университет","universities":"университеты","of":"(«чего?») — of Tyumen = Тюмени","tyumen":"Тюмень",
+"is":"есть, является (часто не переводится)","a":"(артикль, не переводится)","the":"(артикль, не переводится)","an":"(артикль, не переводится)",
+"young":"молодой","with":"с, со","complicated":"сложный","history":"история","it":"он / оно (здесь — университет)","was":"был","were":"были",
+"established":"основан (to establish — основывать)","in":"в","as":"как, в качестве","branch":"филиал","branches":"филиалы","ural":"Уральский",
+"polytechnic":"политехнический","institute":"институт","institutes":"институты","became":"стал (become — становиться)","trained":"готовил, обучал",
+"specialists":"специалисты","for":"для","oil":"нефть","and":"и","gas":"газ","industry":"промышленность","number":"количество, число",
+"students":"студенты","student":"студент","increased":"увеличилось, выросло","from":"от, из, с","to":"к, до; (перед глаголом не переводится)",
+"first":"первый","rector":"ректор","anatoly":"Анатолий","kosukhin":"Косухин","training":"учебный; обучение","tv":"ТВ, телевизионный",
+"centre":"центр","extramural":"заочный","got":"получил (get — получать)","status":"статус","two":"два","consolidated":"объединены",
+"into":"в (во что-то)","now":"сейчас","consists":"состоит (consist of — состоять из)","several":"несколько","about":"около; о",
+"thousand":"тысяча","study":"учатся, учиться","here":"здесь","some":"некоторые","them":"них, их","more":"больше, более","than":"чем",
+"countries":"страны","library":"библиотека","contains":"содержит","one":"один","million":"миллион","books":"книги","can":"могут, может",
+"take":"брать (take part — участвовать)","part":"часть (take part — участвовать)","festivals":"фестивали","sports":"спортивные",
+"competitions":"соревнования","i":"я","am":"(есть; не переводится) — I am = я","proud":"гордый (be proud of — гордиться)","my":"мой, моя",
+"i'll":"я буду (= I will)","do":"делать (do my best — стараться изо всех сил)","best":"лучший (do my best — стараться изо всех сил)",
+"be":"быть","good":"хороший",
+"i'd":"я бы (= I would)","like":"нравиться; I'd like = я бы хотела","job":"работа","where":"где","they":"они","offer":"предлагают, предлагать",
+"in-service":"без отрыва от работы (in-service training — обучение на работе)","it's":"это (= it is)","great":"здорово, отлично",
+"have":"иметь","chance":"шанс, возможность","keep":"продолжать (keep on — продолжать)","on":"(keep on — продолжать; taking on — брать на себя)",
+"learning":"изучение, узнавать","new":"новые","things":"вещи","when":"когда","interesting":"интересная","there":"(there are — есть, имеются)",
+"are":"есть (there are — имеются)","always":"всегда","opportunities":"возможности","easier":"легче","stay":"оставаться",
+"motivated":"мотивированный, с желанием работать","your":"твой, свой",
+"prospects":"перспективы","idea":"идея, мысль","getting":"получение (getting ahead — продвижение вперёд)","ahead":"вперёд",
+"taking":"взятие (taking on — брать на себя)","responsibility":"ответственность","promotion":"повышение (по работе)",
+"important":"важный","me":"мне, меня","want":"хочу","challenging":"сложный, бросающий вызов","goals":"цели",
+"1956":"1956 — найнтин фифти сикс","1963":"1963 — найнтин сиксти сри","1994":"1994 — найнтин найнти фо","2016":"2016 — твенти сикстин",
+"750":"750 — севен хандрэд (энд) фифти","9000":"9000 — найн саузенд","7":"7 — севен","16":"16 — сикстин","25":"25 — твенти файв"
+};
+
+/* Уроки: body — HTML, quiz — [вопрос, [варианты], индекс верного, пояснение] */
+const LESSONS = [
+{id:'l1', sec:'read', icon:'🔤', title:'Урок 1. Алфавит', sub:'26 букв и их названия', body:`
+<p>В английском <b>26 букв</b>. Название буквы и звук, который она даёт в слове, часто <b>разные</b>, поэтому сначала выучи названия: так произносят аббревиатуры (IT, ATM, VPN).</p>
+<table><tr><th>Буква</th><th>Название</th><th>Буква</th><th>Название</th></tr>
+<tr><td>A a</td><td>эй</td><td>N n</td><td>эн</td></tr>
+<tr><td>B b</td><td>би</td><td>O o</td><td>оу</td></tr>
+<tr><td>C c</td><td>си</td><td>P p</td><td>пи</td></tr>
+<tr><td>D d</td><td>ди</td><td>Q q</td><td>кью</td></tr>
+<tr><td>E e</td><td>и</td><td>R r</td><td>а</td></tr>
+<tr><td>F f</td><td>эф</td><td>S s</td><td>эс</td></tr>
+<tr><td>G g</td><td>джи</td><td>T t</td><td>ти</td></tr>
+<tr><td>H h</td><td>эйч</td><td>U u</td><td>ю</td></tr>
+<tr><td>I i</td><td>ай</td><td>V v</td><td>ви</td></tr>
+<tr><td>J j</td><td>джей</td><td>W w</td><td>дабл-ю</td></tr>
+<tr><td>K k</td><td>кей</td><td>X x</td><td>экс</td></tr>
+<tr><td>L l</td><td>эл</td><td>Y y</td><td>уай</td></tr>
+<tr><td>M m</td><td>эм</td><td>Z z</td><td>зед</td></tr></table>
+<p><b>Гласные буквы:</b> A, E, I, O, U и иногда Y. Остальные согласные.</p>
+<div class="tip">💡 Буквы, которые читаются почти как русские: <b>B, D, F, K, L, M, N, P, S, T, V, Z</b>. Обманщицы: <b>C</b> (к или с), <b>G</b> (г или дж), <b>H</b> (лёгкий выдох «х»), <b>J</b> (дж), <b>W</b> (у), <b>R</b> (мягкое «р», на конце слова часто не слышно).</div>`,
+quiz:[
+["Как называется буква H?",["аш","эйч","ха","хи"],1,"H = эйч"],
+["Как читается аббревиатура IT?",["ит","ай-ти","и-те","ай-ит"],1,"I = ай, T = ти"],
+["Как называется буква E?",["е","э","и","эй"],2,"Буква E называется «и»"],
+["Как читается ATM?",["атм","эй-ти-эм","а-те-эм","эй-тэ-эм"],1,"A = эй, T = ти, M = эм"],
+["Какая из букв — гласная?",["K","S","U","W"],2,"Гласные: A, E, I, O, U (и Y)"]]},
+
+{id:'l2', sec:'read', icon:'🅰️', title:'Урок 2. Гласные и слоги', sub:'главное правило чтения', body:`
+<p>Одна и та же гласная читается по-разному. Всё зависит от <b>типа слога</b>. Это самое важное правило английского чтения.</p>
+<h3>1. Открытый слог: гласная читается как её название</h3>
+<p>Слог открытый, если после гласной нет согласной или в конце слова стоит <b>немая e</b> (она не читается, но «открывает» слог): <b>name</b> — нейм, <b>time</b> — тайм, <b>home</b> — хоум.</p>
+<h3>2. Закрытый слог: короткий звук</h3>
+<p>После гласной стоит согласная: <b>cat</b> — кэт, <b>bed</b> — бед, <b>big</b> — биг, <b>dog</b> — дог, <b>cup</b> — кап.</p>
+<h3>3. Гласная + r: долгий звук</h3>
+<p><b>car</b> — каа, <b>her</b> — хёё, <b>bird</b> — бёёд, <b>fork</b> — фоок, <b>turn</b> — тёён.</p>
+<table><tr><th>Буква</th><th>Открытый</th><th>Закрытый</th><th>+ r</th></tr>
+<tr><td><b>A</b></td><td>эй — name</td><td>э — cat</td><td>аа — car</td></tr>
+<tr><td><b>E</b></td><td>и — he</td><td>е — bed</td><td>ёё — her</td></tr>
+<tr><td><b>I / Y</b></td><td>ай — time, my</td><td>и — big</td><td>ёё — bird</td></tr>
+<tr><td><b>O</b></td><td>оу — home</td><td>о — dog</td><td>оо — fork</td></tr>
+<tr><td><b>U</b></td><td>ю — tube</td><td>а — cup</td><td>ёё — turn</td></tr></table>
+<div class="tip">💡 Секрет: <b>e на конце слова почти никогда не читается</b>, но делает предыдущую гласную «длинной»: hat (хэт) → hate (хейт), kit (кит) → kite (кайт).</div>
+<h3>Безударные гласные</h3>
+<p>В длинных словах безударные гласные «проглатываются» и звучат как короткое «э»: <b>problem</b> — проблэм, <b>computer</b> — кэмпьютэ, <b>student</b> — стьюдэнт.</p>`,
+quiz:[
+["Как читается make?",["маке","мейк","мэк","мак"],1,"Немая e на конце → A читается как «эй»"],
+["Как читается cat?",["кейт","кат","кэт","сат"],2,"Закрытый слог → A = «э»"],
+["Как читается nine?",["нине","нин","найн","нейн"],2,"Открытый слог (e на конце) → I = «ай»"],
+["Как читается car?",["кар-р","каа","кэр","кор"],1,"A + r = долгое «аа»"],
+["Как читается cup?",["куп","кап","кьюп","кэп"],1,"Закрытый слог → U = «а»"],
+["Как читается note?",["ноте","нот","ноут","нут"],2,"Немая e → O = «оу»"],
+["Как читается her?",["хер","хёё","хиэ","хэр"],1,"E + r = «ёё»"]]},
+
+{id:'l3', sec:'read', icon:'🔡', title:'Урок 3. Сочетания согласных', sub:'th, sh, ch, -tion…', body:`
+<p>Две-три согласные вместе часто дают <b>один звук</b>. Выучи эту таблицу, и ты прочитаешь большинство слов.</p>
+<table><tr><th>Сочетание</th><th>Звук</th><th>Пример</th></tr>
+<tr><td><b>th</b></td><td>з / с (язык между зубами)</td><td>this — зис, think — синк</td></tr>
+<tr><td><b>sh</b></td><td>ш</td><td>she — ши, phishing — фишинг</td></tr>
+<tr><td><b>ch, tch</b></td><td>ч</td><td>chance — чаанс, watch — уоч</td></tr>
+<tr><td><b>ph</b></td><td>ф</td><td>phone — фоун</td></tr>
+<tr><td><b>ck</b></td><td>к</td><td>back — бэк, hacker — хэкэ</td></tr>
+<tr><td><b>ng</b></td><td>носовое «н(г)»</td><td>long — лонг, training — трейнинг</td></tr>
+<tr><td><b>wh</b></td><td>у (иногда х)</td><td>what — уот, who — ху</td></tr>
+<tr><td><b>qu</b></td><td>кв</td><td>question — квесчн</td></tr>
+<tr><td><b>kn</b></td><td>н (k немая)</td><td>know — ноу</td></tr>
+<tr><td><b>wr</b></td><td>р (w немая)</td><td>write — райт</td></tr>
+<tr><td><b>igh</b></td><td>ай</td><td>high — хай, right — райт</td></tr>
+<tr><td><b>-tion, -sion</b></td><td>шн</td><td>information — инфэмейшн</td></tr>
+<tr><td><b>-ture</b></td><td>чэ</td><td>future — фьючэ, lecture — лекчэ</td></tr>
+<tr><td><b>-ous</b></td><td>эс</td><td>dangerous — дейнджэрэс</td></tr></table>
+<h3>C и G перед e, i, y</h3>
+<p><b>C</b> перед e, i, y читается <b>«с»</b>: city — сити, centre — сентэ. В остальных случаях <b>«к»</b>: cat, cup, computer.</p>
+<p><b>G</b> перед e, i, y часто читается <b>«дж»</b>: engineer — энджиниэ, page — пейдж. В остальных случаях <b>«г»</b>: go, big.</p>
+<p><b>S</b> между гласными читается <b>«з»</b>: rose — роуз, use — юз.</p>`,
+quiz:[
+["Как читается phone?",["пхоне","фоун","пон","фон-е"],1,"ph = ф, немая e → O = оу"],
+["Как читается know?",["кноу","ноу","кнов","нау"],1,"k перед n не читается"],
+["Как читается station?",["статион","стейшн","стэйтион","сташн"],1,"-tion = шн"],
+["Как читается city?",["кити","сити","цити","сайти"],1,"C перед i = с"],
+["Как читается night?",["нигхт","нит","найт","нихт"],2,"igh = ай"],
+["Как читается future?",["футуре","фьючэ","фьютюр","футэ"],1,"-ture = чэ"],
+["Как читается think?",["тхинк","синк","финк","тинк"],1,"th = звук между «с» и «ф», язык между зубами"]]},
+
+{id:'l4', sec:'read', icon:'🔠', title:'Урок 4. Сочетания гласных', sub:'ee, ea, oo, ai, ou…', body:`
+<table><tr><th>Сочетание</th><th>Звук</th><th>Пример</th></tr>
+<tr><td><b>ee, ea</b></td><td>ии</td><td>meet — миит, read — риид</td></tr>
+<tr><td><b>oo</b></td><td>уу (иногда у)</td><td>school — скуул, book — бук</td></tr>
+<tr><td><b>ai, ay</b></td><td>эй</td><td>train — трейн, day — дей</td></tr>
+<tr><td><b>oa</b></td><td>оу</td><td>road — роуд, loan — лоун</td></tr>
+<tr><td><b>ou, ow</b></td><td>ау</td><td>house — хаус, how — хау</td></tr>
+<tr><td><b>ow</b> на конце</td><td>часто оу</td><td>know — ноу, slow — слоу</td></tr>
+<tr><td><b>oi, oy</b></td><td>ой</td><td>point — пойнт, boy — бой</td></tr>
+<tr><td><b>au, aw</b></td><td>оо</td><td>author — оосэ, draw — дроо</td></tr>
+<tr><td><b>ew</b></td><td>ью</td><td>new — нью</td></tr>
+<tr><td><b>ie</b> в середине</td><td>ии</td><td>piece — пиис</td></tr>
+<tr><td><b>-er, -or</b> на конце</td><td>э</td><td>teacher — тиичэ, doctor — доктэ</td></tr>
+<tr><td><b>-y</b> на конце длинного слова</td><td>и</td><td>city — сити, security — сикьюрити</td></tr>
+<tr><td><b>-y</b> в коротком слове</td><td>ай</td><td>my — май, why — уай</td></tr></table>
+<div class="tip">💡 Если сомневаешься, как читается слово, нажми 🔊 в приложении. Телефон сам произнесёт его по-английски.</div>`,
+quiz:[
+["Как читается green?",["грен","гриин","грэн","грейн"],1,"ee = ии"],
+["Как читается rain?",["раин","рейн","рэн","рин"],1,"ai = эй"],
+["Как читается out?",["оут","аут","ут","от"],1,"ou = ау"],
+["Как читается teacher?",["теачер","тиичэ","тичер","теашер"],1,"ea = ии, ch = ч, -er = э"],
+["Как читается boy?",["бу","бой","бай","бой-и"],1,"oy = ой"]]},
+
+{id:'l5', sec:'read', icon:'⚠️', title:'Урок 5. Слова-исключения', sub:'читаются не по правилам', body:`
+<p>Эти слова встречаются постоянно, а читаются не по правилам. Их нужно просто запомнить.</p>
+<table><tr><th>Слово</th><th>Читается</th><th>Перевод</th></tr>
+<tr><td>one</td><td>уан</td><td>один</td></tr><tr><td>two</td><td>ту</td><td>два</td></tr>
+<tr><td>who</td><td>ху</td><td>кто</td></tr><tr><td>do</td><td>ду</td><td>делать</td></tr>
+<tr><td>does</td><td>даз</td><td>делает</td></tr><tr><td>said</td><td>сед</td><td>сказал</td></tr>
+<tr><td>says</td><td>сез</td><td>говорит</td></tr><tr><td>have</td><td>хэв</td><td>иметь</td></tr>
+<tr><td>give</td><td>гив</td><td>давать</td></tr><tr><td>live</td><td>лив</td><td>жить</td></tr>
+<tr><td>come</td><td>кам</td><td>приходить</td></tr><tr><td>some</td><td>сам</td><td>некоторые</td></tr>
+<tr><td>money</td><td>мани</td><td>деньги</td></tr><tr><td>people</td><td>пипл</td><td>люди</td></tr>
+<tr><td>women</td><td>уимин</td><td>женщины</td></tr><tr><td>would</td><td>вуд</td><td>бы</td></tr>
+<tr><td>could</td><td>куд</td><td>мог бы</td></tr><tr><td>should</td><td>шуд</td><td>следует</td></tr>
+<tr><td>through</td><td>сру</td><td>через</td></tr><tr><td>enough</td><td>инаф</td><td>достаточно</td></tr>
+<tr><td>hour</td><td>ауэ</td><td>час</td></tr><tr><td>debt</td><td>дет</td><td>долг</td></tr>
+<tr><td>receipt</td><td>рисиит</td><td>чек</td></tr><tr><td>queue</td><td>кью</td><td>очередь</td></tr>
+<tr><td>Wednesday</td><td>уэнздей</td><td>среда</td></tr><tr><td>business</td><td>бизнэс</td><td>бизнес</td></tr></table>`,
+quiz:[
+["Как читается people?",["пеопле","пипл","пеопл","пипле"],1,"Исключение: people = пипл"],
+["Как читается would?",["воулд","вуд","вулд","уолд"],1,"l в would/could/should не читается"],
+["Как читается money?",["моней","мани","мони","мэни"],1,"Исключение: money = мани"],
+["Как читается one?",["оне","уан","он","ван-е"],1,"Исключение: one = уан"],
+["Как читается hour?",["хоур","ауэ","хаур","оур"],1,"h в hour не читается"]]},
+
+{id:'l6', sec:'read', icon:'🧩', title:'Урок 6. Порядок слов', sub:'как найти смысл предложения', body:`
+<p>В русском слова можно переставлять, а в английском порядок <b>строгий</b>. Это помогает переводить:</p>
+<div class="tip"><b>Кто? → Что делает? → Кого/что? → Где? → Когда?</b><br>
+<span class="pr">Students</span> | <span class="pr">study</span> | <span class="pr">English</span> | <span class="pr">at university</span> | <span class="pr">every day</span>.<br>
+Студенты | изучают | английский | в университете | каждый день.</div>
+<h3>Алгоритм</h3>
+<p>1. Найди <b>сказуемое</b>, то есть глагол. Он почти всегда идёт <b>вторым</b>, после того, кто делает.<br>
+2. Слева от глагола — <b>подлежащее</b> (кто/что).<br>
+3. Справа — всё остальное.</p>
+<h3>Вопрос</h3>
+<p>В вопросе вспомогательное слово (do, does, did, is, are, can…) ставится <b>в начало</b>: <b>Do</b> you study? — Ты учишься? <b>Can</b> you help me? — Можешь помочь?</p>
+<h3>Отрицание</h3>
+<p>Ищи <b>not</b> или <b>n't</b>: I do<b>n't</b> know — я <b>не</b> знаю. It is<b> not</b> easy — это <b>не</b> легко.</p>
+<h3>Прилагательное перед существительным</h3>
+<p>Цепочку существительных переводи <b>с конца</b>: <b>information security specialist</b> → специалист (по) безопасности информации.</p>`,
+quiz:[
+["Где обычно стоит глагол в утвердительном предложении?",["в самом начале","после подлежащего","в конце","где угодно"],1,"Кто → что делает → ..."],
+["Как перевести: «Do you like music?»",["Ты делаешь музыку","Тебе нравится музыка?","Ты любишь делать музыку","Музыка тебе"],1,"Do в начале = это вопрос"],
+["Как перевести «computer security system»?",["компьютер безопасности системы","система компьютерной безопасности","безопасный компьютер","система компьютера"],1,"Цепочку существительных переводим с конца"],
+["Что означает n't в «I don't know»?",["вопрос","«не» — отрицание","прошедшее время","«тоже»"],1,"n't = not = не"]]},
+
+{id:'l7', sec:'read', icon:'🔧', title:'Урок 7. to be, to have, there is', sub:'самые частые конструкции', body:`
+<h3>Глагол to be — «быть, являться»</h3>
+<table><tr><th>Форма</th><th>С кем</th><th>Пример</th></tr>
+<tr><td><b>am</b></td><td>I</td><td>I am a student — я студентка</td></tr>
+<tr><td><b>is</b></td><td>he, she, it</td><td>It is important — это важно</td></tr>
+<tr><td><b>are</b></td><td>we, you, they</td><td>They are students — они студенты</td></tr>
+<tr><td><b>was / were</b></td><td>прошлое</td><td>It was big — он был большим</td></tr>
+<tr><td><b>will be</b></td><td>будущее</td><td>I will be a specialist — я буду специалистом</td></tr></table>
+<p>В настоящем времени <b>is/am/are обычно не переводятся</b> или переводятся как «—» (тире), «это», «является».</p>
+<h3>have / has — «иметь, у кого-то есть»</h3>
+<p>I <b>have</b> a computer — <b>у меня есть</b> компьютер. She <b>has</b> a scholarship — у неё есть стипендия.</p>
+<h3>There is / There are — «есть, имеется, находится»</h3>
+<p>Такие предложения переводи <b>с конца</b>:<br>
+<b>There are</b> 7 institutes <b>in the University</b>. → <b>В университете</b> (есть) 7 институтов.</p>`,
+quiz:[
+["Какую форму to be ставим с «they»?",["am","is","are","be"],2,"we / you / they → are"],
+["Как перевести «I have a laptop»?",["Я ноутбук","У меня есть ноутбук","Я хочу ноутбук","Я имел ноутбук"],1,"have = у меня есть"],
+["Как перевести «There is a library in the university»?",["Там библиотека университета","В университете есть библиотека","Это библиотека","Библиотека там"],1,"There is … переводим с конца"],
+["Что означает «was»?",["есть (сейчас)","был / была","будет","имеет"],1,"was — прошедшее от is"]]},
+
+{id:'l8', sec:'read', icon:'⏳', title:'Урок 8. Как узнать время глагола', sub:'настоящее, прошлое, будущее', body:`
+<p>Чтобы понять, <b>когда</b> происходит действие, смотри на <b>форму глагола</b> и на слова рядом.</p>
+<table><tr><th>Видишь</th><th>Время</th><th>Перевод</th></tr>
+<tr><td>work / work<b>s</b></td><td>настоящее, обычно, регулярно</td><td>работаю / работает</td></tr>
+<tr><td><b>am/is/are</b> + work<b>ing</b></td><td>прямо сейчас</td><td>работаю (сейчас)</td></tr>
+<tr><td>work<b>ed</b> или 2-я форма (went, got, became)</td><td>прошлое</td><td>работал, пошёл, получил, стал</td></tr>
+<tr><td><b>was/were</b> + work<b>ing</b></td><td>длилось в прошлом</td><td>работал (в тот момент)</td></tr>
+<tr><td><b>will</b> + work</td><td>будущее</td><td>буду работать / поработаю</td></tr>
+<tr><td><b>have/has</b> + work<b>ed</b> (3-я форма)</td><td>уже сделано, результат важен сейчас</td><td>поработал, сделал</td></tr>
+<tr><td><b>had</b> + 3-я форма</td><td>сделано до другого момента в прошлом</td><td>уже сделал (к тому времени)</td></tr></table>
+<div class="tip">💡 Окончание <b>-s</b> у глагола (works) = «он/она». <b>-ed</b> = прошлое. <b>-ing</b> = процесс.</div>
+<h3>Неправильные глаголы (самые нужные)</h3>
+<table><tr><th>Глагол</th><th>Прошлое</th><th>3-я форма</th><th>Перевод</th></tr>
+<tr><td>be</td><td>was/were</td><td>been</td><td>быть</td></tr>
+<tr><td>have</td><td>had</td><td>had</td><td>иметь</td></tr>
+<tr><td>do</td><td>did</td><td>done</td><td>делать</td></tr>
+<tr><td>go</td><td>went</td><td>gone</td><td>идти</td></tr>
+<tr><td>get</td><td>got</td><td>got</td><td>получать</td></tr>
+<tr><td>become</td><td>became</td><td>become</td><td>становиться</td></tr>
+<tr><td>make</td><td>made</td><td>made</td><td>делать, создавать</td></tr>
+<tr><td>take</td><td>took</td><td>taken</td><td>брать</td></tr>
+<tr><td>give</td><td>gave</td><td>given</td><td>давать</td></tr>
+<tr><td>write</td><td>wrote</td><td>written</td><td>писать</td></tr>
+<tr><td>know</td><td>knew</td><td>known</td><td>знать</td></tr>
+<tr><td>build</td><td>built</td><td>built</td><td>строить</td></tr>
+<tr><td>choose</td><td>chose</td><td>chosen</td><td>выбирать</td></tr></table>`,
+quiz:[
+["«The university changed its name» — какое время?",["настоящее","прошлое","будущее","сейчас в процессе"],1,"-ed = прошлое: изменил"],
+["«I will study» — как перевести?",["я учусь","я учился","я буду учиться","я учу сейчас"],2,"will = будущее"],
+["«She is reading» — что это значит?",["она читала","она читает сейчас","она будет читать","она прочитала"],1,"is + -ing = прямо сейчас"],
+["«It became a university» — became от какого глагола?",["come","become","be","bring"],1,"become – became – become"],
+["«He has finished the work» — как перевести?",["он закончил работу","он закончит работу","он заканчивает","он имеет работу"],0,"has + 3-я форма = уже сделал"]]},
+
+{id:'l9', sec:'read', icon:'🔄', title:'Урок 9. Пассив', sub:'«был основан», «делается»', body:`
+<p>Пассив — когда действие делают <b>над</b> предметом. Его очень много в научных и технических текстах.</p>
+<div class="tip"><b>to be (is / was / will be…) + 3-я форма глагола</b></div>
+<table><tr><th>Английский</th><th>Перевод</th></tr>
+<tr><td>It <b>was established</b> in 1956</td><td>Он <b>был основан</b> в 1956</td></tr>
+<tr><td>English <b>is spoken</b> everywhere</td><td>По-английски <b>говорят</b> везде</td></tr>
+<tr><td>Data <b>is encrypted</b></td><td>Данные <b>шифруются</b></td></tr>
+<tr><td>The program <b>will be tested</b></td><td>Программа <b>будет протестирована</b></td></tr>
+<tr><td>It <b>was written by</b> students</td><td>Это <b>было написано</b> студентами</td></tr></table>
+<p>Слово <b>by</b> после пассива = «кем?»: by programmers — программистами.</p>
+<p>Переводить можно тремя способами: «был сделан», «делается» (-ся) или «делают» (без «кто»).</p>`,
+quiz:[
+["Как перевести «The files are encrypted»?",["Файлы шифруют сами","Файлы зашифрованы","Файлы шифровали","Файлы будут"],1,"are + encrypted = пассив"],
+["«was built by students» — что значит by?",["около","кем — студентами","для студентов","у студентов"],1,"by после пассива = кем"],
+["Что из этого — пассив?",["I study English","It was created in 1960","They work","We will go"],1,"was + created (3-я форма)"]]},
+
+{id:'l10', sec:'read', icon:'💪', title:'Урок 10. Модальные глаголы', sub:'can, must, should…', body:`
+<table><tr><th>Слово</th><th>Читается</th><th>Значит</th></tr>
+<tr><td><b>can</b></td><td>кэн</td><td>могу, умею</td></tr>
+<tr><td><b>could</b></td><td>куд</td><td>мог; мог бы (вежливо)</td></tr>
+<tr><td><b>must</b></td><td>маст</td><td>должен (обязательно)</td></tr>
+<tr><td><b>have to</b></td><td>хэв ту</td><td>приходится, нужно</td></tr>
+<tr><td><b>should</b></td><td>шуд</td><td>следует, стоит (совет)</td></tr>
+<tr><td><b>may</b></td><td>мей</td><td>можно; возможно</td></tr>
+<tr><td><b>might</b></td><td>майт</td><td>может быть (не уверен)</td></tr>
+<tr><td><b>need to</b></td><td>нид ту</td><td>нужно</td></tr>
+<tr><td><b>would</b></td><td>вуд</td><td>бы</td></tr></table>
+<p>После них глагол идёт <b>без to</b> и без окончаний: You <b>should use</b> strong passwords — тебе <b>следует использовать</b> надёжные пароли.</p>
+<p><b>I'd like</b> = I would like = я бы хотела.</p>`,
+quiz:[
+["Как перевести «You must change your password»?",["Ты можешь сменить пароль","Ты должна сменить пароль","Ты сменила пароль","Смени пароль позже"],1,"must = должен (обязательно)"],
+["Что значит «I'd like»?",["мне понравилось","я бы хотела","я люблю","я сделала"],1,"I'd like = I would like"],
+["«Hackers can steal data» — как перевести?",["Хакеры украли данные","Хакеры могут украсть данные","Хакеры должны украсть","Хакеры крадут данные"],1,"can = могут"]]},
+
+{id:'l11', sec:'read', icon:'🔗', title:'Урок 11. -ing, to + глагол, предлоги', sub:'мелкие слова, большой смысл', body:`
+<h3>Окончание -ing</h3>
+<p>1. Процесс: is read<b>ing</b> — читает (сейчас).<br>
+2. Как существительное: Read<b>ing</b> is useful — <b>Чтение</b> полезно.<br>
+3. Как причастие: a work<b>ing</b> computer — <b>работающий</b> компьютер.</p>
+<h3>to + глагол</h3>
+<p>Часто значит «<b>чтобы</b>»: I study <b>to become</b> a specialist — я учусь, <b>чтобы стать</b> специалистом.</p>
+<h3>Главные предлоги</h3>
+<table><tr><th>Предлог</th><th>Значит</th><th>Пример</th></tr>
+<tr><td><b>of</b></td><td>«чего?» (родительный падеж)</td><td>a branch of the institute — филиал института</td></tr>
+<tr><td><b>in</b></td><td>в</td><td>in Tyumen, in 1956</td></tr>
+<tr><td><b>on</b></td><td>на</td><td>on the table</td></tr>
+<tr><td><b>at</b></td><td>в, у (точка)</td><td>at university, at 7 o'clock</td></tr>
+<tr><td><b>to</b></td><td>к, в (направление)</td><td>go to university</td></tr>
+<tr><td><b>for</b></td><td>для</td><td>for students</td></tr>
+<tr><td><b>from</b></td><td>из, от</td><td>from Mongolia</td></tr>
+<tr><td><b>with</b></td><td>с</td><td>with friends</td></tr>
+<tr><td><b>by</b></td><td>кем, чем; на (транспорте)</td><td>by bus — на автобусе</td></tr>
+<tr><td><b>about</b></td><td>о; около</td><td>about 16 thousand — около 16 тысяч</td></tr>
+<tr><td><b>into</b></td><td>в (внутрь)</td><td>divide into — делить на</td></tr></table>
+<h3>Артикли a / an / the</h3>
+<p>Они <b>не переводятся</b>. Просто подсказывают, что дальше будет существительное.</p>`,
+quiz:[
+["«a branch of the institute» — как перевести?",["филиал и институт","филиал института","институт филиала","ветка института"],1,"of = родительный падеж"],
+["«I came to learn English» — что значит to learn?",["учила","чтобы выучить","к учёбе","учусь"],1,"to + глагол часто = «чтобы»"],
+["Переводится ли артикль the?",["да, «этот»","обычно нет","да, «тот»","всегда «один»"],1,"Артикли обычно не переводятся"]]},
+
+{id:'l12', sec:'read', icon:'🧱', title:'Урок 12. Как устроены слова', sub:'суффиксы и приставки', body:`
+<p>Зная одно слово, можно понять ещё 5–10. Смотри на конец слова.</p>
+<h3>Суффиксы существительных</h3>
+<table><tr><td><b>-er, -or, -ist</b></td><td>тот, кто делает</td><td>teach → teach<b>er</b>, hack → hack<b>er</b>, special<b>ist</b></td></tr>
+<tr><td><b>-tion, -sion</b></td><td>действие, процесс</td><td>protect → protec<b>tion</b>, encrypt → encryp<b>tion</b></td></tr>
+<tr><td><b>-ment</b></td><td>действие, результат</td><td>develop → develop<b>ment</b></td></tr>
+<tr><td><b>-ness</b></td><td>качество</td><td>happy → happi<b>ness</b></td></tr>
+<tr><td><b>-ity</b></td><td>качество (-ость)</td><td>secure → secur<b>ity</b>, available → availabil<b>ity</b></td></tr></table>
+<h3>Суффиксы прилагательных</h3>
+<table><tr><td><b>-ful</b></td><td>полный, с</td><td>use<b>ful</b> — полезный</td></tr>
+<tr><td><b>-less</b></td><td>без</td><td>use<b>less</b> — бесполезный</td></tr>
+<tr><td><b>-able, -ible</b></td><td>можно сделать</td><td>avail<b>able</b> — доступный</td></tr>
+<tr><td><b>-al, -ic, -ive, -ous</b></td><td>-ный, -ский</td><td>digit<b>al</b>, econom<b>ic</b>, act<b>ive</b>, danger<b>ous</b></td></tr></table>
+<p><b>-ly</b> делает наречие: quick → quick<b>ly</b> (быстро), regular → regular<b>ly</b> (регулярно).</p>
+<h3>Приставки</h3>
+<table><tr><td><b>un-, in-, im-, dis-</b></td><td>не-, без-</td><td><b>un</b>authorized — несанкционированный, <b>un</b>available — недоступный</td></tr>
+<tr><td><b>re-</b></td><td>снова, пере-</td><td><b>re</b>sit — пересдать</td></tr>
+<tr><td><b>de-</b></td><td>обратное действие</td><td><b>de</b>crypt — расшифровать</td></tr>
+<tr><td><b>over-, under-</b></td><td>сверх-, недо-</td><td><b>over</b>draft</td></tr>
+<tr><td><b>cyber-</b></td><td>кибер-</td><td><b>cyber</b>attack</td></tr></table>`,
+quiz:[
+["Что значит «programmer»?",["программа","программист","программировать","программный"],1,"-er = тот, кто делает"],
+["Что значит «unsafe»?",["безопасный","небезопасный","сейф","спасённый"],1,"un- = не-"],
+["Что значит «protection»?",["защищать","защита","защитник","защищённый"],1,"-tion = существительное-действие"],
+["Что значит «careless»?",["заботливый","небрежный (без заботы)","забота","заботиться"],1,"-less = без"]]},
+
+{id:'l13', sec:'read', icon:'🗺️', title:'Урок 13. Как перевести любой текст', sub:'пошаговый алгоритм', body:`
+<h3>Шаг 1. Пойми тему</h3>
+<p>Прочитай заголовок и посмотри на картинки. Уже будет понятно, о чём текст.</p>
+<h3>Шаг 2. Найди знакомые слова</h3>
+<p>Многие слова похожи на русские: <b>university, institute, computer, specialist, status, history, international, economic</b>. Их не нужно учить!</p>
+<h3>Шаг 3. Разбери каждое предложение</h3>
+<p>Найди глагол (урок 6) и посмотри его время (урок 8) и пассив (урок 9). Потом найди, <b>кто</b> делает. Остальное — подробности.</p>
+<h3>Шаг 4. Незнакомые слова</h3>
+<p>Сначала попробуй угадать по суффиксу (урок 12) и по смыслу. Если не получилось, смотри словарь, только ключевые слова.</p>
+<h3>Шаг 5. Переведи дословно, потом сделай красиво</h3>
+<p>Дословно: «Университет был основан как филиал в 1956». Красиво: «Университет основан в 1956 году как филиал».</p>
+<h3>Ложные друзья переводчика</h3>
+<table><tr><th>Слово</th><th>Кажется</th><th>На самом деле</th></tr>
+<tr><td>actual</td><td>актуальный</td><td>фактический, настоящий</td></tr>
+<tr><td>magazine</td><td>магазин</td><td>журнал</td></tr>
+<tr><td>accurate</td><td>аккуратный</td><td>точный</td></tr>
+<tr><td>sympathetic</td><td>симпатичный</td><td>сочувствующий</td></tr>
+<tr><td>data</td><td>дата</td><td>данные</td></tr>
+<tr><td>fabric</td><td>фабрика</td><td>ткань</td></tr>
+<tr><td>credit (в вузе)</td><td>кредит</td><td>зачёт</td></tr></table>
+<div class="tip">💡 Дальше тренируйся на текстах «Практика 1–3»: сначала переведи сама, потом нажми на предложение и проверь.</div>`,
+quiz:[
+["С чего начать перевод предложения?",["с первого слова","найти глагол и того, кто делает","с последнего слова","перевести каждое слово по словарю"],1,"Глагол + подлежащее = скелет смысла"],
+["Что значит «magazine»?",["магазин","журнал","склад","газета"],1,"Ложный друг переводчика"],
+["Что значит «data»?",["дата","данные","день","дача"],1,"data = данные"]]},
+
+{id:'l14', sec:'read', icon:'🏋️', title:'Тренажёр: как читается слово', sub:'закрепление уроков 2–5', body:`<p>Проверь, как ты усвоила правила чтения. Выбери правильное произношение.</p>`,
+quiz:[
+["security",["секурити","сикьюрити","секьюрайти","сикурити"],1,"безударные → э/и, -ity = ити"],
+["network",["нетворк","нетуёк","нетуорк","нэтвёк"],1,"or после w = «ё»"],
+["password",["пассворд","паасуёд","пасвурд","пассуорд"],1,"a перед ss = «аа», w + or = «уё»"],
+["knowledge",["кноуледж","нолидж","ноуледж","кнолэдж"],1,"k не читается"],
+["information",["информатион","инфэмейшн","инфомейтион","информашн"],1,"-tion = шн, безударные = э"],
+["thousand",["тхоусанд","саузэнд","тоусанд","фаусанд"],1,"th = с/з, ou = ау"],
+["light",["лигхт","лайт","лит","лихт"],1,"igh = ай"],
+["teacher",["теачер","тиичэ","тичер","теашер"],1,"ea = ии, ch = ч"],
+["engineer",["енгинеер","энджиниэ","енджинир","инжинер"],1,"g перед i = дж"],
+["phone",["пхоне","фоун","фон","понэ"],1,"ph = ф"],
+["write",["врите","райт","врайт","уриит"],1,"w перед r не читается"],
+["student",["студент","стьюдэнт","стадент","стюден"],1,"u в открытом слоге = «ю»"]]},
+
+/* ---------- РАЗГОВОР: урок ---------- */
+{id:'tl1', sec:'talk', icon:'🛠️', title:'Как самой строить фразы', sub:'5 формул, на которых держится речь', body:`
+<p>Чтобы говорить, не нужно знать всю грамматику. Хватит пяти формул.</p>
+<h3>1. Я делаю (обычно)</h3>
+<p><b>I + глагол</b>: I study. I live in Tyumen. I like music.<br>
+С he/she добавь <b>-s</b>: She stud<b>ies</b>. He like<b>s</b> music.</p>
+<h3>2. Я не делаю</h3>
+<p><b>I don't + глагол</b>: I don't smoke. I don't understand.<br>
+He/she: She <b>doesn't</b> like coffee.</p>
+<h3>3. Вопрос</h3>
+<p><b>Do you + глагол?</b> Do you like music? Do you study here?<br>
+С вопросительным словом: <b>Where do you</b> live? <b>What do you</b> study?</p>
+<h3>4. Прошлое</h3>
+<p><b>I + глагол-ed</b> или 2-я форма: I studi<b>ed</b>, I <b>went</b>, I <b>was</b>.<br>
+Отрицание: I <b>didn't</b> go. Вопрос: <b>Did you</b> go?</p>
+<h3>5. Будущее и планы</h3>
+<p><b>I will + глагол</b>: I will help you.<br>
+<b>I want to + глагол</b>: I want to become a specialist.<br>
+<b>I'm going to + глагол</b>: I'm going to study tonight.</p>
+<div class="tip">💡 Не бойся ошибок! Тебя поймут, даже если скажешь «I go university yesterday». Главное — говорить. Каждый день произноси вслух 5 фраз о себе.</div>`,
+quiz:[
+["Как сказать «Я не понимаю»?",["I not understand","I don't understand","I doesn't understand","Not I understand"],1,"I don't + глагол"],
+["Как спросить «Ты живёшь в Тюмени?»",["You live in Tyumen?","Do you live in Tyumen?","Does you live in Tyumen?","Live you in Tyumen?"],1,"Do you + глагол?"],
+["Как сказать «Она учится здесь»?",["She study here","She studies here","She do study here","She studying here"],1,"he/she + -s"],
+["Как сказать «Я ходила в банк вчера»?",["I go to the bank yesterday","I went to the bank yesterday","I will go to the bank yesterday","I going bank"],1,"go – went (прошлое)"],
+["Как сказать «Я хочу стать специалистом»?",["I want become a specialist","I want to become a specialist","I wants to become","I to want become"],1,"want to + глагол"]]}
+];
+
+/* ===================== ХРАНИЛИЩЕ ===================== */
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+let known = new Set(store.get('known', []));
+let lessonsDone = store.get('lessons', {});
+const saveKnown = ()=>store.set('known',[...known]);
+const key = (deckId,it)=>deckId+'::'+it.en;
+
+/* ===================== ОЗВУЧКА ===================== */
+let voice=null;
+function pickVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const vs=speechSynthesis.getVoices();
+  voice = vs.find(v=>/en[-_]GB/i.test(v.lang)) || vs.find(v=>/en[-_]US/i.test(v.lang)) || vs.find(v=>/^en/i.test(v.lang)) || null;
+}
+if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+let slow = store.get('slow', true);
+function speak(text){
+  if(!('speechSynthesis' in window)){ alert('Озвучка не поддерживается в этом браузере'); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/^(A|B|Student|Teacher):\s*/,'').replace(/\.\.\./g,''));
+  u.lang = voice?voice.lang:'en-GB'; if(voice) u.voice=voice;
+  u.rate = slow?0.75:0.95;
+  speechSynthesis.speak(u);
+}
+function speakQueue(list){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  list.forEach(t=>{ const u=new SpeechSynthesisUtterance(t.replace(/^(A|B|Student|Teacher):\s*/,'').replace(/\.\.\./g,'')); u.lang=voice?voice.lang:'en-GB'; if(voice)u.voice=voice; u.rate=slow?0.75:0.95; speechSynthesis.speak(u); });
+}
+
+/* Распознавание речи (если есть в браузере) */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function listen(target, out){
+  if(!SR){ out.innerHTML='<span class="muted">Микрофон не поддерживается в этом браузере. Попробуй Chrome.</span>'; return; }
+  const r=new SR(); r.lang='en-US'; r.interimResults=false; r.maxAlternatives=3;
+  out.innerHTML='<span class="muted">🎙️ Говори...</span>';
+  r.onresult=e=>{
+    const alts=[...e.results[0]].map(a=>a.transcript);
+    const best=alts.map(a=>[a,similar(a,target)]).sort((a,b)=>b[1]-a[1])[0];
+    const p=Math.round(best[1]*100);
+    out.innerHTML=`Услышала: «${esc(best[0])}» — <span class="${p>=70?'msg-ok':'msg-bad'}">${p}% ${p>=70?'👍 отлично!':'попробуй ещё'}</span>`;
+  };
+  r.onerror=()=>{ out.innerHTML='<span class="muted">Не расслышала. Нажми ещё раз и говори чётче.</span>'; };
+  r.start();
+}
+const norm = s=>s.toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+function similar(a,b){
+  const A=norm(a).split(' '), B=norm(b).split(' ').filter(w=>w);
+  if(!B.length) return 0;
+  let hit=0; const pool=[...A];
+  B.forEach(w=>{ const i=pool.indexOf(w); if(i>=0){hit++; pool.splice(i,1);} });
+  return hit/B.length;
+}
+
+/* ===================== УТИЛИТЫ ===================== */
+const $app=document.getElementById('app'), $hdr=document.getElementById('hdr'), $tabs=document.getElementById('tabs');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const sayBtn=t=>`<button class="say" data-say="${esc(t)}" aria-label="Произнести">🔊</button>`;
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-say]'); if(b){ e.stopPropagation(); speak(b.dataset.say); } });
+
+let state={view:'home', sec:'exam'};
+function go(s, push=true){ state=s; if(push) history.pushState(s,''); render(); window.scrollTo(0,0); }
+window.addEventListener('popstate',e=>{ state=e.state||{view:'home',sec:'exam'}; render(); });
+history.replaceState(state,'');
+
+function header(title, back){
+  $hdr.innerHTML = (back?`<button class="back" onclick="history.back()">‹ Назад</button>`:'') + `<span>${esc(title)}</span>`;
+}
+function renderTabs(){
+  $tabs.innerHTML = SECTIONS.map(s=>`<button class="${state.sec===s.id?'on':''}" onclick="go({view:'home',sec:'${s.id}'})"><span>${s.icon}</span>${s.title}</button>`).join('');
+}
+const deckById=id=> id==='allexam' ? allExamDeck() : DECKS.find(d=>d.id===id);
+function allExamDeck(){
+  const items=[]; DECKS.filter(d=>d.sec==='exam').forEach(d=>d.items.forEach(it=>items.push({...it, _d:d.id})));
+  return {id:'allexam', sec:'exam', icon:'🎲', title:'Все слова к завтра', sub:'вперемешку', items, mixed:true};
+}
+const itemKey=(deck,it)=>key(it._d||deck.id,it);
+function deckProgress(d){ const n=d.items.length; const k=d.items.filter(it=>known.has(itemKey(d,it))).length; return [k,n]; }
+
+/* ===================== ЭКРАНЫ ===================== */
+function render(){
+  renderTabs(); hidePop();
+  const v=state.view;
+  if(v==='drillmenu') return renderDrillMenu();
+  if(v==='drill') return renderDrill();
+  if(v==='home') return renderHome();
+  if(v==='deck') return renderDeck();
+  if(v==='study') return renderStudy();
+  if(v==='text') return renderText();
+  if(v==='lesson') return renderLesson();
+}
+
+function itemRow(icon,title,sub,onclick,prog){
+  const bar = prog?`<div class="bar"><i style="width:${prog[1]?Math.round(prog[0]/prog[1]*100):0}%"></i></div>`:'';
+  return `<div class="card item" onclick="${onclick}"><div class="ic">${icon}</div><div class="grow"><div class="t">${esc(title)}</div><div class="s">${esc(sub)}${prog?` · ${prog[0]}/${prog[1]}`:''}</div>${bar}</div><div class="muted">›</div></div>`;
+}
+
+function renderHome(){
+  const sec=SECTIONS.find(s=>s.id===state.sec);
+  header(sec.icon+' '+sec.full,false);
+  let h='';
+  if(sec.id==='exam'){
+    h+=`<div class="banner">🎯 Только то, что нужно к паре 6 ноября: пересказ, тексты 4 и 9, слова Unit 1 и Unit 5.</div>`;
+  }
+  if(sec.id==='read') h+=`<div class="card small muted">Проходи уроки по порядку. В конце каждого урока есть проверка. Потом тренируйся на текстах из блока «Практика»: сначала переведи сама, потом нажми на предложение и посмотри перевод.</div>`;
+  if(sec.id==='sec') h+=`<div class="card small muted">Учи слова по темам, потом читай тексты: их можно пересказывать на паре или на экзамене. Начни с «My future profession».</div>`;
+  if(sec.id==='talk') h+=`<div class="card small muted">Сначала урок «Как самой строить фразы», потом фразы и диалоги. Нажимай 🔊, повторяй вслух, а кнопкой 🎤 проверяй своё произношение.</div>`;
+
+  const texts=TEXTS.filter(t=>t.sec===sec.id && !t.practice);
+  const prac=TEXTS.filter(t=>t.sec===sec.id && t.practice);
+  const lessons=LESSONS.filter(l=>l.sec===sec.id);
+  const decks=DECKS.filter(d=>d.sec===sec.id);
+
+  if(sec.id==='exam'){
+    h+=`<h2>Тексты</h2>`+texts.map(t=>itemRow(t.icon,t.title,t.sub,`go({view:'text',sec:'${sec.id}',id:'${t.id}'})`)).join('');
+    h+=`<h2>🧠 Понять и выучить тексты</h2><div class="card small muted">Перевод каждого слова и 4 тренировки, чтобы рассказать текст без подсказок.</div>`+texts.map(t=>itemRow('🧠',t.title.replace(' (наизусть)',''),'по словам · собери · вставь · что дальше',`go({view:'drillmenu',sec:'exam',id:'${t.id}'})`)).join('');
+    h+=`<h2>Слова</h2>`+itemRow('🎲','Все слова к завтра','общая проверка вперемешку',`go({view:'deck',sec:'exam',id:'allexam'})`,deckProgress(allExamDeck()));
+    h+=decks.map(d=>itemRow(d.icon,d.title,d.sub,`go({view:'deck',sec:'${sec.id}',id:'${d.id}'})`,deckProgress(d))).join('');
+  } else {
+    if(lessons.length) h+=`<h2>${sec.id==='read'?'Теория':'Урок'}</h2>`+lessons.map(l=>itemRow(lessonsDone[l.id]?'✅':l.icon,l.title,l.sub+(lessonsDone[l.id]?` · ${lessonsDone[l.id]}`:''),`go({view:'lesson',sec:'${sec.id}',id:'${l.id}'})`)).join('');
+    if(prac.length) h+=`<h2>Практика</h2>`+prac.map(t=>itemRow(t.icon,t.title,t.sub,`go({view:'text',sec:'${sec.id}',id:'${t.id}'})`)).join('');
+    if(decks.length) h+=`<h2>${sec.id==='talk'?'Фразы':'Слова'}</h2>`+decks.map(d=>itemRow(d.icon,d.title,d.sub,`go({view:'deck',sec:'${sec.id}',id:'${d.id}'})`,deckProgress(d))).join('');
+    if(texts.length) h+=`<h2>${sec.id==='talk'?'Диалоги и рассказы':'Тексты для рассказа'}</h2>`+texts.map(t=>itemRow(t.icon,t.title,t.sub,`go({view:'text',sec:'${sec.id}',id:'${t.id}'})`)).join('');
+  }
+  h+=`<h2>Настройки</h2><div class="card row"><button class="chip ${slow?'on':''}" onclick="slow=!slow;store.set('slow',slow);render()">🐢 Медленная озвучка</button></div>`;
+  $app.innerHTML=h;
+}
+
+let opts = store.get('opts',{dir:'en', onlyNew:false});
+function renderDeck(){
+  const d=deckById(state.id); const [k,n]=deckProgress(d);
+  header(d.title,true);
+  $app.innerHTML=`
+  <div class="card"><div class="t">Выучено ${k} из ${n}</div><div class="bar"><i style="width:${Math.round(k/n*100)}%"></i></div></div>
+  <div class="card">
+    <div class="small muted" style="margin-bottom:6px">Направление</div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="chip ${opts.dir==='en'?'on':''}" onclick="opts.dir='en';store.set('opts',opts);render()">🇬🇧 → 🇷🇺</button>
+      <button class="chip ${opts.dir==='ru'?'on':''}" onclick="opts.dir='ru';store.set('opts',opts);render()">🇷🇺 → 🇬🇧</button>
+      <button class="chip ${opts.onlyNew?'on':''}" onclick="opts.onlyNew=!opts.onlyNew;store.set('opts',opts);render()">Только невыученные</button>
+    </div>
+    <div class="grid2">
+      <button class="btn" onclick="startStudy('cards')">🃏 Карточки</button>
+      <button class="btn" onclick="startStudy('test')">✅ Тест</button>
+      <button class="btn sec" onclick="startStudy('write')">⌨️ Написать</button>
+      <button class="btn sec" onclick="speakQueue(deckById('${d.id}').items.map(i=>i.en))">🔊 Прослушать все</button>
+    </div>
+  </div>
+  <div class="card">${d.items.map(it=>`<div class="wl"><span class="k ${known.has(itemKey(d,it))?'y':''}"></span><div class="grow" style="flex:1"><div class="en">${esc(it.en)}</div><div class="pr">${esc(it.pr)}</div><div class="ru">${esc(it.ru)}</div></div>${sayBtn(it.en)}</div>`).join('')}</div>
+  <div class="center"><button class="btn sec small" onclick="if(confirm('Сбросить прогресс этого набора?')){deckById('${d.id}').items.forEach(it=>known.delete(itemKey(deckById('${d.id}'),it)));saveKnown();render();}">Сбросить прогресс</button></div>`;
+}
+
+/* ---- Сессия обучения ---- */
+let S=null;
+function startStudy(mode){
+  const d=deckById(state.id);
+  let pool=d.items;
+  if(opts.onlyNew){ const f=pool.filter(it=>!known.has(itemKey(d,it))); if(f.length) pool=f; }
+  S={deck:d, mode, queue:shuffle(pool), total:pool.length, right:0, wrong:0, shown:false, answered:false};
+  go({view:'study',sec:state.sec,id:state.id});
+}
+function nextCard(ok){
+  const it=S.queue.shift();
+  if(ok){ known.add(itemKey(S.deck,it)); S.right++; }
+  else { known.delete(itemKey(S.deck,it)); S.wrong++; S.queue.splice(Math.min(3,S.queue.length),0,it); }
+  saveKnown(); S.shown=false; S.answered=false; S.opts=null; renderStudy();
+}
+function renderStudy(){
+  if(!S){ history.back(); return; }
+  const d=S.deck; header(d.title,true);
+  if(!S.queue.length){
+    $app.innerHTML=`<div class="card center"><div class="big">🎉 Готово!</div><p>Правильно с первого раза: <b>${S.right-S.wrong>0?S.right-S.wrong:0}</b> из ${S.total}<br>Ошибок по ходу: <b>${S.wrong}</b></p>
+    <div class="row"><button class="btn" onclick="startStudy('${S.mode}')">Ещё раз</button><button class="btn sec" onclick="history.back()">К списку</button></div></div>`;
+    return;
+  }
+  const it=S.queue[0];
+  const left=`<div class="small muted center">Осталось: ${S.queue.length}</div>`;
+  const q = opts.dir==='en' ? it.en : it.ru;
+  if(S.mode==='cards'){
+    $app.innerHTML=left+`<div class="card flash" onclick="S.shown=true;renderStudy()">
+      ${opts.dir==='en'?`<div class="big">${esc(it.en)}</div>${sayBtn(it.en)}`:`<div class="big">${esc(it.ru)}</div>`}
+      ${S.shown?`<hr style="width:60%;border:0;border-top:1px solid var(--line)">
+        ${opts.dir==='en'?`<div class="pr">${esc(it.pr)}</div><div style="font-size:20px">${esc(it.ru)}</div>`:`<div class="en">${esc(it.en)}</div><div class="pr">${esc(it.pr)}</div>${sayBtn(it.en)}`}`
+        :`<div class="muted small">нажми, чтобы увидеть ответ</div>`}
+    </div>
+    ${S.shown?`<div class="row"><button class="btn bad" onclick="nextCard(false)">Ещё учу</button><button class="btn ok" onclick="nextCard(true)">Знаю ✓</button></div>
+    <div class="card" style="margin-top:12px"><button class="btn sec small" onclick="listen(${esc(JSON.stringify(it.en))},document.getElementById('sr'))">🎤 Скажи вслух</button><div id="sr" class="small" style="margin-top:6px"></div></div>`
+    :`<div class="row"><button class="btn sec" onclick="S.shown=true;renderStudy()">Показать ответ</button></div>`}`;
+  }
+  else if(S.mode==='test'){
+    if(!S.opts){
+      const ans = opts.dir==='en'?it.ru:it.en;
+      let others=d.items.filter(x=>x.en!==it.en);
+      if(others.length<3) others=others.concat(DECKS.filter(x=>x.sec===d.sec).flatMap(x=>x.items).filter(x=>x.en!==it.en));
+      const wrong=shuffle([...new Set(others.map(x=>opts.dir==='en'?x.ru:x.en))].filter(x=>x!==ans)).slice(0,3);
+      S.opts=shuffle([ans,...wrong]); S.ans=ans;
+    }
+    $app.innerHTML=left+`<div class="card center"><div class="big">${esc(q)}</div>${opts.dir==='en'?sayBtn(it.en):''}${S.answered?`<div class="pr">${esc(it.pr)}</div>`:''}</div>
+    <div>${S.opts.map((o,i)=>`<button class="opt ${S.answered?(o===S.ans?'right':(i===S.pick?'wrong':'')):''}" onclick="pickOpt(${i})">${esc(o)}</button>`).join('')}</div>
+    ${S.answered?`<div class="row"><button class="btn" onclick="nextCard(${S.opts[S.pick]===S.ans})">Дальше ›</button></div>`:''}`;
+  }
+  else if(S.mode==='write'){
+    $app.innerHTML=left+`<div class="card center"><div class="small muted">Напиши по-английски:</div><div class="big">${esc(it.ru)}</div></div>
+    <input class="inp" id="wr" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="английское слово" ${S.answered?'disabled':''} value="${esc(S.typed||'')}">
+    <div id="wres" style="margin:10px 0">${S.answered?(S.wok?`<span class="msg-ok">Верно! ✓</span>`:`<span class="msg-bad">Правильно:</span> <b>${esc(it.en)}</b>`)+`<div class="pr">${esc(it.pr)}</div>`:''}</div>
+    <div class="row">${S.answered?`<button class="btn" onclick="S.typed='';nextCard(S.wok)">Дальше ›</button>${sayBtn(it.en)}`:`<button class="btn sec" onclick="checkWrite(true)">Не знаю</button><button class="btn" onclick="checkWrite()">Проверить</button>`}</div>`;
+    const inp=document.getElementById('wr'); if(!S.answered){ inp.focus(); inp.onkeydown=e=>{ if(e.key==='Enter') checkWrite(); }; }
+  }
+}
+function pickOpt(i){ if(S.answered) return; S.pick=i; S.answered=true; renderStudy(); if(S.opts[i]===S.ans) speak(S.queue[0].en); }
+function checkWrite(giveUp){
+  const it=S.queue[0]; const v=document.getElementById('wr').value; S.typed=v;
+  const strip=s=>norm(s).replace(/^to /,'').replace(/\.\.\./g,'').trim();
+  const variants=it.en.split('/').map(strip);
+  S.wok = !giveUp && (variants.includes(strip(v)) || strip(v)===strip(it.en));
+  S.answered=true; renderStudy(); speak(it.en);
+}
+
+/* ---- Текст ---- */
+let tOpt = store.get('topt',{pr:true, ru:true, hide:0});
+function renderText(){
+  const t=TEXTS.find(x=>x.id===state.id); header(t.title,true);
+  const ru = (t.practice && !state.touched) ? false : tOpt.ru;
+  const levels=['Весь текст','Скрыть каждое 3-е слово','Только первые буквы','Скрыть всё'];
+  const hideWord=(w,i)=>{
+    if(tOpt.hide===0) return wordSpan(w);
+    const core=w.replace(/[.,!?:;]+$/,''), tail=w.slice(core.length);
+    if(tOpt.hide===1 && i%3!==1) return wordSpan(w);
+    if(tOpt.hide===2) return `<span class="blank" onclick="this.classList.toggle('show')"><span style="color:var(--accent)">${esc(core[0]||'')}</span>${esc(core.slice(1))}</span>${esc(tail)}`;
+    return `<span class="blank" onclick="this.classList.toggle('show')">${esc(core)}</span>${esc(tail)}`;
+  };
+  $app.innerHTML=`
+  <div class="card">
+    <div class="row" style="margin-bottom:8px">
+      <button class="chip ${tOpt.pr?'on':''}" onclick="tOpt.pr=!tOpt.pr;saveT()">Произношение</button>
+      <button class="chip ${ru?'on':''}" onclick="tOpt.ru=${!ru};saveT()">Перевод</button>
+      <button class="chip" onclick="speakQueue(TEXTS.find(x=>x.id==='${t.id}').s.map(s=>s.en))">🔊 Весь текст</button>
+    </div>
+    <div class="small muted" style="margin-bottom:6px">Заучивание: скрывай слова и вспоминай. Нажми на скрытое слово, чтобы подсмотреть.</div>
+    <div class="row">${levels.map((l,i)=>`<button class="chip ${tOpt.hide===i?'on':''}" onclick="tOpt.hide=${i};saveT()">${l}</button>`).join('')}</div>
+  </div>
+  <div class="card small">👆 Нажми на любое слово, и увидишь, что оно значит.${t.sec==='exam'?`<br><button class="btn small" style="margin-top:8px" onclick="go({view:'drillmenu',sec:'exam',id:'${t.id}'})">🧠 Тренировки по этому тексту</button>`:''}</div>
+  ${t.practice?`<div class="card small muted">✍️ Сначала переведи каждое предложение сама (вслух или в тетради). Потом нажми на предложение, чтобы проверить перевод.</div>`:''}
+  <div class="card">${t.s.map((s,idx)=>`<div class="sent"><div style="flex:1" onclick="this.querySelector('.ru')?.classList.remove('hid')">
+    <div class="en">${s.en.split(' ').map(hideWord).join(' ')}</div>
+    ${tOpt.pr?`<div class="pr ${tOpt.hide===3?'hid':''}" onclick="this.classList.remove('hid')">${esc(s.pr)}</div>`:''}
+    <div class="ru ${ru?'':'hid'}">${esc(s.ru)}</div></div>${sayBtn(s.en)}</div>`).join('')}</div>
+  ${!t.practice?`<div class="card"><div class="t">🎤 Расскажи сама</div><div class="small muted">Нажми и расскажи весь текст вслух. Приложение посчитает, сколько слов ты сказала правильно.</div>
+  <button class="btn sec small" style="margin-top:8px" onclick="listen(${esc(JSON.stringify(t.s.map(s=>s.en).join(' ')))},document.getElementById('sr2'))">🎤 Начать</button><div id="sr2" class="small" style="margin-top:6px"></div></div>`:''}`;
+}
+function saveT(){ store.set('topt',tOpt); state.touched=true; renderText(); }
+
+/* ---- Урок ---- */
+function renderLesson(){
+  const l=LESSONS.find(x=>x.id===state.id); header(l.title,true);
+  const q=state.q||{i:-1};
+  let h=`<div class="card lesson">${l.body}</div>`;
+  if(q.i<0){
+    h+=`<div class="row"><button class="btn" onclick="go({...state,q:{i:0,score:0,ans:null}},false)">Проверить себя (${l.quiz.length} вопросов) ›</button></div>`;
+  } else if(q.i>=l.quiz.length){
+    const res=`${q.score}/${l.quiz.length}`; lessonsDone[l.id]=res; store.set('lessons',lessonsDone);
+    h+=`<div class="card center"><div class="big">${q.score===l.quiz.length?'🏆':'👍'} ${res}</div><p>${q.score===l.quiz.length?'Отлично! Урок пройден.':'Перечитай урок и попробуй ещё раз.'}</p>
+    <div class="row"><button class="btn sec" onclick="go({...state,q:{i:0,score:0,ans:null}},false)">Ещё раз</button><button class="btn" onclick="history.back()">К урокам</button></div></div>`;
+  } else {
+    const [qq,os,ok,ex]=l.quiz[q.i];
+    h+=`<div class="card" id="quiz"><div class="small muted">Вопрос ${q.i+1} из ${l.quiz.length}</div><div class="en" style="margin:6px 0 10px">${esc(qq)} ${/^[a-z ]+$/i.test(qq)?sayBtn(qq):''}</div>
+    ${os.map((o,i)=>`<button class="opt ${q.ans!==null?(i===ok?'right':(i===q.ans?'wrong':'')):''}" onclick="lessonAns(${i})">${esc(o)}</button>`).join('')}
+    ${q.ans!==null?`<div class="small" style="margin:6px 0 10px">${q.ans===ok?'<span class="msg-ok">Верно!</span>':'<span class="msg-bad">Неверно.</span>'} ${esc(ex)}</div><button class="btn" onclick="go({...state,q:{i:${q.i+1},score:${q.score},ans:null}},false);document.getElementById('quiz')?.scrollIntoView()">Дальше ›</button>`:''}</div>`;
+  }
+  $app.innerHTML=h;
+  if(q.i>=0) setTimeout(()=>document.getElementById('quiz')?.scrollIntoView({block:'start'}),0);
+}
+function lessonAns(i){
+  const l=LESSONS.find(x=>x.id===state.id); const q=state.q; if(q.ans!==null) return;
+  const ok=l.quiz[q.i][2];
+  state={...state,q:{...q,ans:i,score:q.score+(i===ok?1:0)}}; history.replaceState(state,''); renderLesson();
+}
+
+/* ---- Перевод слова по нажатию ---- */
+const wordSpan=w=>`<span class="w">${esc(w)}</span>`;
+const coreWord=w=>w.toLowerCase().replace(/[’]/g,"'").replace(/^[^a-z0-9']+|[^a-z0-9'-]+$/g,'');
+function lookup(k){
+  if(GLOSS[k]) return GLOSS[k];
+  for(const d of DECKS) for(const it of d.items){ if(it.en.toLowerCase().replace(/^to /,'')===k) return it.ru; }
+  return null;
+}
+function hidePop(){ const p=document.getElementById('pop'); p.hidden=true; document.querySelectorAll('.w.sel').forEach(x=>x.classList.remove('sel')); }
+function showPop(el){
+  hidePop(); el.classList.add('sel');
+  const k=coreWord(el.textContent), tr=lookup(k);
+  const p=document.getElementById('pop');
+  p.innerHTML=`<div style="display:flex;gap:10px;align-items:center"><div style="flex:1"><div class="en">${esc(k)}</div><div style="font-size:18px">${tr?esc(tr):'<span class="muted">нет в словаре, смотри перевод предложения</span>'}</div></div>${sayBtn(k)}<button class="say" onclick="hidePop()">✕</button></div>`;
+  p.hidden=false;
+}
+document.addEventListener('click',e=>{
+  const w=e.target.closest('.w');
+  if(w){ e.stopPropagation(); showPop(w); return; }
+  if(!e.target.closest('#pop')) hidePop();
+},true);
+
+/* ---- Тренировки по текстам ---- */
+const DRILLS=[
+ ['build','🧩 Собери предложение','Слова перемешаны, нажимай их по порядку. Сверху перевод.'],
+ ['gap','✏️ Вставь пропущенное слово','Выбери слово, которого не хватает.'],
+ ['recall','🇷🇺→🇬🇧 Вспомни по переводу','Видишь русское предложение, говоришь вслух английское, потом проверяешь.'],
+ ['chain','🔗 Что дальше?','Видишь предложение, вспоминаешь следующее. Так текст запоминается по цепочке, как на паре.']
+];
+function renderDrillMenu(){
+  const t=TEXTS.find(x=>x.id===state.id); header('🧠 '+t.title,true);
+  $app.innerHTML=`<div class="card small muted">Совет: сначала открой текст и нажми на каждое незнакомое слово. Потом пройди тренировки сверху вниз. «Что дальше?» делай последней, несколько раз.</div>
+  ${itemRow('📖','Текст: перевод по словам','нажимай на слова',`go({view:'text',sec:'exam',id:'${t.id}'})`)}
+  ${DRILLS.map(d=>itemRow(d[1].split(' ')[0],d[1].slice(d[1].indexOf(' ')+1),d[2],`startDrill('${t.id}','${d[0]}')`)).join('')}`;
+}
+let D=null;
+function startDrill(id,mode){
+  const t=TEXTS.find(x=>x.id===id);
+  let order=t.s.map((_,i)=>i);
+  if(mode==='chain') order=order.slice(0,-1);
+  if(mode==='gap'||mode==='recall') order=shuffle(order);
+  D={t,mode,queue:order,total:order.length,errs:0,cur:null};
+  go({view:'drill',sec:'exam',id,mode});
+}
+function drillNext(ok){
+  const i=D.queue.shift();
+  if(!ok){ D.errs++; D.queue.splice(Math.min(2,D.queue.length),0,i); }
+  D.cur=null; renderDrill(); window.scrollTo(0,0);
+}
+function renderDrill(){
+  if(!D||D.t.id!==state.id){ history.back(); return; }
+  const t=D.t, title=DRILLS.find(d=>d[0]===D.mode)[1]; header(title,true);
+  if(!D.queue.length){
+    $app.innerHTML=`<div class="card center"><div class="big">🎉 Готово!</div><p>Ошибок: <b>${D.errs}</b>${D.errs===0?'<br>Идеально! Попробуй следующую тренировку.':'<br>Пройди ещё раз, пока не будет 0 ошибок.'}</p>
+    <div class="row"><button class="btn" onclick="history.back();setTimeout(()=>startDrill('${t.id}','${D.mode}'),50)">Ещё раз</button><button class="btn sec" onclick="history.back()">Другие тренировки</button></div></div>`;
+    return;
+  }
+  const i=D.queue[0], s=t.s[i];
+  const left=`<div class="small muted center">Осталось: ${D.queue.length} · ошибок: ${D.errs}</div>`;
+  if(D.mode==='build'){
+    const words=s.en.split(' ');
+    if(!D.cur) D.cur={words, pool:shuffle(words.map((_,j)=>j)), picked:[], bad:-1, err:false};
+    const c=D.cur, done=c.picked.length===words.length;
+    $app.innerHTML=left+`<div class="card"><div class="ru" style="font-size:17px">${esc(s.ru)}</div>
+      <div class="built" style="margin-top:10px">${c.picked.map(j=>esc(words[j])).join(' ')}</div>
+      <div class="chips">${c.pool.filter(j=>!c.picked.includes(j)).map(j=>`<button class="chip ${c.bad===j?'err':''}" onclick="buildPick(${j})">${esc(words[j])}</button>`).join('')}</div>
+      ${done?`<div class="pr" style="margin-top:8px">${esc(s.pr)}</div>`:''}</div>
+      ${done?`<div class="row"><button class="btn" onclick="drillNext(${!c.err})">Дальше ›</button>${sayBtn(s.en)}</div>`:`<div class="row"><button class="btn sec small" onclick="D.cur.err=true;buildHint()">Подсказка</button></div>`}`;
+  }
+  else if(D.mode==='gap'){
+    const words=s.en.split(' ');
+    if(!D.cur){
+      const cand=words.map((w,j)=>j).filter(j=>coreWord(words[j]).length>=3);
+      const j=cand[Math.floor(Math.random()*cand.length)], ans=coreWord(words[j]);
+      const all=[...new Set(t.s.flatMap(x=>x.en.split(' ')).map(coreWord).filter(w=>w.length>=3&&w!==ans))];
+      D.cur={j, ans, opts:shuffle([ans,...shuffle(all).slice(0,3)]), pick:null};
+    }
+    const c=D.cur;
+    const shown=words.map((w,k)=>k===c.j?(c.pick===null?'<b style="color:var(--accent)">_____</b>':`<b style="color:var(--ok)">${esc(w)}</b>`):esc(w)).join(' ');
+    $app.innerHTML=left+`<div class="card"><div class="en">${shown}</div><div class="ru" style="margin-top:6px">${esc(s.ru)}</div></div>
+      ${c.opts.map((o,k)=>`<button class="opt ${c.pick!==null?(o===c.ans?'right':(k===c.pick?'wrong':'')):''}" onclick="gapPick(${k})">${esc(o)}</button>`).join('')}
+      ${c.pick!==null?`<div class="row"><button class="btn" onclick="drillNext(${c.opts[c.pick]===c.ans})">Дальше ›</button>${sayBtn(s.en)}</div>`:''}`;
+  }
+  else if(D.mode==='recall'||D.mode==='chain'){
+    if(!D.cur) D.cur={shown:false};
+    const target=D.mode==='recall'?s:t.s[i+1];
+    const prompt=D.mode==='recall'
+      ? `<div class="small muted">Скажи по-английски:</div><div style="font-size:19px;font-weight:600;margin-top:4px">${esc(s.ru)}</div>`
+      : `<div class="small muted">Предложение ${i+1}:</div><div class="en">${esc(s.en)}</div><div class="ru small">${esc(s.ru)}</div><div class="small muted" style="margin-top:10px">👉 Скажи вслух, что идёт <b>дальше</b>, потом проверь.</div>`;
+    $app.innerHTML=left+`<div class="card">${prompt}</div>
+      ${D.cur.shown?`<div class="card"><div class="en">${esc(target.en)}</div><div class="pr">${esc(target.pr)}</div>${D.mode==='chain'?`<div class="ru">${esc(target.ru)}</div>`:''}<div style="margin-top:8px">${sayBtn(target.en)}</div></div>
+        <div class="row"><button class="btn bad" onclick="drillNext(false)">Не вспомнила</button><button class="btn ok" onclick="drillNext(true)">Вспомнила ✓</button></div>`
+      :`<div class="card"><button class="btn sec small" onclick="listen(${esc(JSON.stringify(target.en))},document.getElementById('sr3'))">🎤 Сказать в микрофон</button><div id="sr3" class="small" style="margin-top:6px"></div></div>
+        <div class="row"><button class="btn" onclick="D.cur.shown=true;renderDrill()">Показать ответ</button></div>`}`;
+  }
+}
+function buildPick(j){
+  const c=D.cur, need=c.words[c.picked.length];
+  if(c.words[j]===need){ c.picked.push(j); c.bad=-1; if(c.picked.length===c.words.length) speak(D.t.s[D.queue[0]].en); }
+  else { c.bad=j; c.err=true; }
+  renderDrill();
+}
+function buildHint(){ const c=D.cur; const need=c.words[c.picked.length]; const j=c.pool.find(k=>!c.picked.includes(k)&&c.words[k]===need); buildPick(j); }
+function gapPick(k){ if(D.cur.pick!==null) return; D.cur.pick=k; renderDrill(); }
+
+render();
+</script>
+</body>
+</html>
